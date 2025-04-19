@@ -1,0 +1,60 @@
+<?php
+require '../GreyLock/vendor/autoload.php';
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Factory\AppFactory;
+
+$app = AppFactory::create();
+$app->setBasePath('/sites/GreyLock/project/public');
+// Add Slim error middleware for debugging
+$app->addErrorMiddleware(true, true, true);
+
+// Home Page Route
+$app->get('/', function (Request $request, Response $response) {
+    // Start output buffering
+    // This allows us to capture the output of the included file
+    // and write it to the response body
+    ob_start();
+    include 'homepage.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
+// About Page Route
+$app->get('/about', function (Request $request, Response $response) {
+    ob_start();
+    include 'about.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
+// Contact Page Route
+$app->get('/contact', function (Request $request, Response $response) {
+    ob_start();
+    include 'contact.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
+// Login Page Route
+$app->get('/login', function (Request $request, Response $response) {
+    ob_start();
+    include 'login.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
+// Run the Slim application
+try {
+    $app->run();
+} catch (Exception $e) {
+    error_log($e->getMessage());
+    $response = new \Slim\Psr7\Response();
+    $response->getBody()->write('An error occurred. Please try again later.');
+    return $response->withStatus(500);
+}
