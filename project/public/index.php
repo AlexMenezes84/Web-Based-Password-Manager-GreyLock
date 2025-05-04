@@ -6,7 +6,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 $app = AppFactory::create();
-$app->setBasePath('/sites/GreyLock/project/public');
+$app->setBasePath('/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public');
 // Add Slim error middleware for debugging
 $app->addErrorMiddleware(true, true, true);
 

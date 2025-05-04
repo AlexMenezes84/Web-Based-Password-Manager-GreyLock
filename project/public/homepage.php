@@ -11,10 +11,10 @@
         <h1>Welcome to Grey Lock</h1>
     </header>
     <nav>
-        <a href="/sites/GreyLock/project/public/">Home</a>
-        <a href="/sites/GreyLock/project/public/about">About</a>
-        <a href="/sites/GreyLock/project/public/contact">Contact Us</a>
-        <a href="/sites/GreyLock/project/public/login">Login</a>
+        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/">Home</a>
+        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/about">About</a>
+        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/contact">Contact Us</a>
+        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a>
     </nav>
     <div class="content">
         <h2>Home Page</h2>
