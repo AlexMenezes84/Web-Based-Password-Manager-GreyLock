@@ -49,6 +49,15 @@ $app->get('/login', function (Request $request, Response $response) {
     return $response;
 });
 
+// Vault Page Route
+$app->get('/vault', function (Request $request, Response $response) {
+    ob_start();
+    include 'password_vault.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
 // Run the Slim application
 try {
     $app->run();
