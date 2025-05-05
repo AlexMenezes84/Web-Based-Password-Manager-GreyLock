@@ -1,0 +1,7 @@
+.idea/
+.vscode/
+/coverage/
+/vendor/squizlabs
+/logs/*
+!/logs/README.md
+.phpunit.result.cache
