@@ -48,6 +48,24 @@ $app->get('/login', function (Request $request, Response $response) {
     $response->getBody()->write($html);
     return $response;
 });
+// Sign-up Page Route
+$app->get('/signup', function (Request $request, Response $response) {
+    ob_start();
+    include 'signup.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
+// Forgot-password Page Route
+$app->get('/forgot_password', function (Request $request, Response $response) {
+    ob_start();
+    include 'forgot_password.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
 
 // Vault Page Route
 $app->get('/vault', function (Request $request, Response $response) {
