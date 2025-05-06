@@ -74,10 +74,20 @@ $app->get('/password_vault', function (Request $request, Response $response) {
     $response->getBody()->write($html);
     return $response;
 });
+
 // Logout Page Route
 $app->get('/logout', function (Request $request, Response $response) {
     ob_start();
     include 'logout.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+
+// Modify Page Route
+$app->get('/modify_password_form', function (Request $request, Response $response) {
+    ob_start();
+    include 'modify_password_form.php';
     $html = ob_get_clean();
     $response->getBody()->write($html);
     return $response;
