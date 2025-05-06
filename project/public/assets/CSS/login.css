@@ -1,43 +1,6 @@
-/* Basic Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Reuse Global Styles from home.css */
+@import url('home.css');
 
-/* Global Styles */
-body {
-  font-family: Arial, sans-serif;
-  background: #f9f9f9;
-  color: #333;
-  line-height: 1.6;
-}
-
-/* Header */
-header {
-  background: #333;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
-}
-header img {
-  width: 100px;
-  float: left;
-  margin-right: 20px;
-}
-
-/* Navigation */
-nav {
-  background: #444;
-  padding: 10px;
-  text-align: center;
-}
-nav a {
-  color: #fff;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-}
 
 /* Form Container */
 .content {
@@ -75,7 +38,7 @@ nav a {
 }
 
 .content button:hover {
-  background-color: #4cae4c;
+  background-color: #828282;
 }
 
 /* Footer */

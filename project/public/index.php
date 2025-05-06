@@ -66,11 +66,18 @@ $app->get('/forgot_password', function (Request $request, Response $response) {
     return $response;
 });
 
-
 // Vault Page Route
-$app->get('/vault', function (Request $request, Response $response) {
+$app->get('/password_vault', function (Request $request, Response $response) {
     ob_start();
     include 'password_vault.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
+// Logout Page Route
+$app->get('/logout', function (Request $request, Response $response) {
+    ob_start();
+    include 'logout.php';
     $html = ob_get_clean();
     $response->getBody()->write($html);
     return $response;

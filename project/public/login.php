@@ -1,3 +1,6 @@
+<?php
+require '../includes/header.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,16 +10,6 @@
     <script src="assets/login.js"></script>
 </head>
 <body>
-    <header>
-        <img src="assets/logo.png" alt="Grey Lock Logo">
-        <h1>Login Grey Lock</h1>
-    </header>
-    <nav>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/">Home</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/about">About</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/contact">Contact Us</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a>
-    </nav>
     <div class="content">
         <h2>Login Page</h2>
         <form action="../includes/login.inc.php" method="POST">

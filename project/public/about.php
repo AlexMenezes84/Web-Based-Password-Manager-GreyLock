@@ -1,3 +1,6 @@
+<?php
+require '../includes/header.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,16 +9,6 @@
     <link rel="stylesheet" type="text/css" href="assets/css/about.css">
 </head>
 <body>
-    <header>
-        <img src="assets/logo.png" alt="Grey Lock Logo">
-        <h1>About Grey Lock</h1>
-    </header>
-    <nav>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/">Home</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/about">About</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/contact">Contact Us</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a>
-    </nav>
     <div class="content">
         <h2>About Page</h2>
         <p>Learn more about Grey Lock, our mission, and our team behind the success.</p>
