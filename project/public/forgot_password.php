@@ -1,3 +1,6 @@
+<?php
+require '../includes/header.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,16 +9,6 @@
     <link rel="stylesheet" type="text/css" href="assets/css/signup.css"> <!-- Reusing signup.css -->
 </head>
 <body>
-    <header>
-        <img src="assets/logo.png" alt="Grey Lock Logo">
-        <h1>Forgot Password</h1>
-    </header>
-    <nav>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/">Home</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/about">About</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/contact">Contact Us</a>
-        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a>
-    </nav>
     <div class="content">
         <h2>Reset Your Password</h2>
         <form action="../includes/forgot_password.inc.php" method="POST">

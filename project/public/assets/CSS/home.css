@@ -19,54 +19,86 @@ header {
   color: #fff;
   padding: 20px;
   text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-/* Logo Style */
+
 header img {
   width: 100px;
   float: left;
   margin-right: 20px;
 }
 
-/* Navigation */
-nav {
-  background: #444;
-  padding: 10px;
-  text-align: center;
+header h1 {
+  font-size: 24px;
+  margin: 0;
 }
 
-nav a {
+header nav {
+  margin-top: 10px;
+}
+
+header nav a {
   color: #fff;
   margin: 0 15px;
   text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+header nav a:hover {
+  color: #828282;
+}
+
+/* Welcome Message */
+header .welcome-message {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 14px;
+  color: #fff;
   font-weight: bold;
 }
 
 /* Main Content */
 .container {
+  max-width: 1200px;
+  margin: 30px auto;
   padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 .container h2 {
   margin-bottom: 15px;
+  font-size: 28px;
+  color: #333;
 }
 
 .container p {
   margin-bottom: 20px;
+  font-size: 16px;
+  color: #555;
 }
 
 /* Button Style */
 button {
-  background: #333;
+  background: #838383;
   color: #fff;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   font-size: 16px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background: #555;
+  background: #828282;
 }
 
 /* Footer */
@@ -74,27 +106,28 @@ footer {
   background: #333;
   color: #fff;
   text-align: center;
-  padding: 10px;
+  padding: 15px;
   position: fixed;
   bottom: 0;
   width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile Responsive Styles */
 @media only screen and (max-width: 600px) {
   header, nav, .container, footer {
-    padding: 15px;
-    text-align: center;
+      padding: 15px;
+      text-align: center;
   }
-  
+
   nav a {
-    display: block;
-    margin: 10px 0;
+      display: block;
+      margin: 10px 0;
   }
-  
+
   button {
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
   }
 }

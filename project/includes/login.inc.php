@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Redirect to the dashboard or vault page
-            header("Location: ../public/vault.php?login=success");
+            header("Location: ../public/password_vault?login=success");
             exit();
         } else {
             // Invalid credentials
