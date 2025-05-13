@@ -12,9 +12,6 @@ $app->addErrorMiddleware(true, true, true);
 
 // Home Page Route
 $app->get('/', function (Request $request, Response $response) {
-    // Start output buffering
-    // This allows us to capture the output of the included file
-    // and write it to the response body
     ob_start();
     include 'homepage.php';
     $html = ob_get_clean();
@@ -84,10 +81,10 @@ $app->get('/logout', function (Request $request, Response $response) {
     return $response;
 });
 
-// Modify Page Route
-$app->get('/modify_password_form', function (Request $request, Response $response) {
+// Modify Password Page Route
+$app->post('/modify_password', function (Request $request, Response $response) {
     ob_start();
-    include 'modify_password_form.php';
+    require '../includes/modify_password.inc.php';
     $html = ob_get_clean();
     $response->getBody()->write($html);
     return $response;

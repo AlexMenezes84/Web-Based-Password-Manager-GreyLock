@@ -1,6 +1,7 @@
 <?php
 require '../includes/header.php';
 require '../includes/config.php';
+require '../includes/decrypt_password.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -15,25 +16,6 @@ $stmt = $pdo->prepare("SELECT id, service_name, service_username, encrypted_pass
 $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 $stmt->execute();
 $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-function decrypt_password($encrypted_password) {
-    // Include the encryption key from config.php
-    $encryption_key = ENCRYPTION_KEY;
-
-    // Decode the encrypted password (assuming it's base64 encoded)
-    $encrypted_data = base64_decode($encrypted_password);
-
-    // Extract the initialization vector and encrypted data
-    $iv_length = openssl_cipher_iv_length('AES-256-CBC');
-    $iv = substr($encrypted_data, 0, $iv_length);
-    $encrypted_text = substr($encrypted_data, $iv_length);
-
-    // Decrypt the password
-    $decrypted_password = openssl_decrypt($encrypted_text, 'AES-256-CBC', $encryption_key, 0, $iv);
-
-    return $decrypted_password;
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -77,10 +59,11 @@ function decrypt_password($encrypted_password) {
                                     <button onclick="togglePassword(this)">Show</button>
                                 </td>
                                 <td>
-                                    <form action="../includes/delete_password.inc.php" method="POST" style="display:inline;">
-                                        <input type="hidden" name="password_id" value="<?= $password['id'] ?>">
-                                        <button type="submit" class="deleteButton">Delete</button>
-                                    </form>
+                                    <button onclick="openModifyModal(<?= htmlspecialchars(json_encode($password)) ?>)">Modify</button>
+                                    <form action="../includes/delete_password.inc.php" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                    <input type="hidden" name="password_id" value="<?= $password['id'] ?>">
+                                    <button type="submit" class="deleteButton">Delete</button>
+                                </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -133,6 +116,8 @@ function decrypt_password($encrypted_password) {
                 <label for="generated_password">Generated Password:</label>
                 <input type="text" id="generated_password" readonly>
                 <br>
+                <button type="button" onclick="modifyPassword()">Modify Password</button>
+                <br>
                 <button type="button" onclick="showGeneratedPasswords()">Show All Generated Passwords</button>
                 <br>
                 <div id="generatedPasswordsList" style="display: none; margin-top: 10px;">
@@ -140,6 +125,28 @@ function decrypt_password($encrypted_password) {
                     <ul id="generatedPasswords"></ul>
                 </div>
                 <button type="button" onclick="closeModal()">Close</button>
+            </div>
+           <!-- Modify Password Modal -->
+            <div id="modifyPasswordModal" style="display: none;">
+                <h3>Modify Password Details</h3>
+                <form id="modifyPasswordForm" action="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/modify_password" method="POST">
+                    <input type="hidden" id="modify_password_id" name="password_id">
+                    <label for="modify_service_name">Service Name:</label>
+                    <input type="text" id="modify_service_name" name="service_name" required>
+                    <br>
+                    <label for="modify_website_link">Website Link:</label>
+                    <input type="text" id="modify_website_link" name="website_link" required>
+                    <br>
+                    <label for="modify_service_username">Username:</label>
+                    <input type="text" id="modify_service_username" name="service_username" required>
+                    <br>
+                    <label for="modify_password">Password:</label>
+                    <input type="text" id="modify_password" name="password" required>
+                    <form id="modify_Password" action="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/modify_password" method="POST">
+                    <br>
+                    <button type="submit">Save Changes</button>
+                    <button type="button" onclick="closeModal()">Cancel</button>
+                </form>
             </div>
         </div>
     </main>
