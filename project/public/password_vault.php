@@ -59,11 +59,17 @@ $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <button onclick="togglePassword(this)">Show</button>
                                 </td>
                                 <td>
-                                    <button onclick="openModifyModal(<?= htmlspecialchars(json_encode($password)) ?>)">Modify</button>
+                                    <button onclick='openModifyModal(<?= json_encode([
+                                        "id" => $password["id"],
+                                        "service_name" => $password["service_name"],
+                                        "website_link" => $password["website_link"],
+                                        "service_username" => $password["service_username"],
+                                        "password" => decrypt_password($password["encrypted_password"])
+                                    ]) ?>)'>Modify</button>
                                     <form action="../includes/delete_password.inc.php" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
-                                    <input type="hidden" name="password_id" value="<?= $password['id'] ?>">
-                                    <button type="submit" class="deleteButton">Delete</button>
-                                </form>
+                                        <input type="hidden" name="password_id" value="<?= $password['id'] ?>">
+                                        <button type="submit" class="deleteButton">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -116,8 +122,6 @@ $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <label for="generated_password">Generated Password:</label>
                 <input type="text" id="generated_password" readonly>
                 <br>
-                <button type="button" onclick="modifyPassword()">Modify Password</button>
-                <br>
                 <button type="button" onclick="showGeneratedPasswords()">Show All Generated Passwords</button>
                 <br>
                 <div id="generatedPasswordsList" style="display: none; margin-top: 10px;">
@@ -142,7 +146,6 @@ $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <br>
                     <label for="modify_password">Password:</label>
                     <input type="text" id="modify_password" name="password" required>
-                    <form id="modify_Password" action="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/modify_password" method="POST">
                     <br>
                     <button type="submit">Save Changes</button>
                     <button type="button" onclick="closeModal()">Cancel</button>

@@ -92,29 +92,15 @@ function showGeneratedPasswords() {
 }
 // Open the "Modify Password" modal
 function openModifyModal(password) {
-    // Populate the modal fields with the password data
     document.getElementById('modify_password_id').value = password.id;
     document.getElementById('modify_service_name').value = password.service_name;
     document.getElementById('modify_website_link').value = password.website_link;
     document.getElementById('modify_service_username').value = password.service_username;
-
-    // Fetch the decrypted password and populate the password field
-    fetch(`decrypt_password.php?encrypted_password=${encodeURIComponent(password.encrypted_password)}`)
-        .then(response => response.text())
-        .then(decryptedPassword => {
-            document.getElementById('modify_password').value = decryptedPassword.trim();
-        })
-        .catch(error => {
-            console.error('Error decrypting password:', error);
-            document.getElementById('modify_password').value = 'Error decrypting password';
-        });
-
-    // Display the modal and overlay
+    document.getElementById('modify_password').value = password.password;
     document.getElementById('modifyPasswordModal').style.display = 'block';
     document.getElementById('modalOverlay').style.display = 'block';
 }
 
-// Close any open modal
 function closeModal() {
     document.getElementById('addPasswordModal').style.display = 'none';
     document.getElementById('generatePasswordModal').style.display = 'none';

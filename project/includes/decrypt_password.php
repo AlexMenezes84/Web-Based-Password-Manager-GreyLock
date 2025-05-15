@@ -16,3 +16,11 @@ function decrypt_password($encrypted_password) {
     // Decrypt the password
     return openssl_decrypt($encrypted_text, 'AES-256-CBC', $encryption_key, 0, $iv);
 }
+
+if (isset($_GET['encrypted_password'])) {
+    $encrypted_password = $_GET['encrypted_password'];
+    $decrypted_password = decrypt_password($encrypted_password);
+
+    // Ensure the decrypted password is properly sanitized
+    echo htmlspecialchars($decrypted_password, ENT_QUOTES, 'UTF-8');
+}
