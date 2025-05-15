@@ -7,7 +7,7 @@ require '../includes/header.php';
     <meta charset="utf-8">
     <title>Sign Up - Grey Lock</title>
     <link rel="stylesheet" type="text/css" href="assets/css/signup.css">
-    <script src="assets/signup.js" defer></script> 
+    <script src="assets/js/signup.js" defer></script> 
 </head>
 <body>
       <div class="content">

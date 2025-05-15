@@ -1,0 +1,3 @@
+<?php
+define('ENCRYPTION_KEY', '4/19FFCG7DmHtDXdkreD6xjXQ5u8rYVnJouSB2mZnbI');
+define('ENCRYPTION_METHOD', 'AES-256-CBC');

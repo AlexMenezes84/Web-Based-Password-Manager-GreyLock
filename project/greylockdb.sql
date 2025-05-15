@@ -164,7 +164,9 @@ ALTER TABLE `passwords`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `password_resets`
+-- Indexes for tY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`able `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD PRIMARY KEY (`id`);
@@ -173,9 +175,7 @@ ALTER TABLE `password_resets`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEemail`);
 
 --
 -- AUTO_INCREMENT for dumped tables

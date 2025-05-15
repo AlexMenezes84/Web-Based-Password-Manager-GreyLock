@@ -74,12 +74,19 @@ $app->get('/password_vault', function (Request $request, Response $response) {
     $response->getBody()->write($html);
     return $response;
 });
+
 // Logout Page Route
 $app->get('/logout', function (Request $request, Response $response) {
     ob_start();
     include 'logout.php';
     $html = ob_get_clean();
     $response->getBody()->write($html);
+    return $response;
+});
+
+// Modify Page Route
+$app->post('/modify_password', function ($request, $response) {
+    require '../includes/modify_password.inc.php';
     return $response;
 });
 
