@@ -1,7 +1,8 @@
 /* Basic Reset */
 * {
-  margin: 0;
+  margin: 2px;
   padding: 0;
+  border-radius: 10px;
   box-sizing: border-box;
 }
 
@@ -103,15 +104,52 @@ button:hover {
 
 /* Footer */
 footer {
+  
   background: #333;
   color: #fff;
   text-align: center;
   padding: 15px;
   position: fixed;
   bottom: 0;
-  width: 100%;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  margin: 2px; 
+  left: 0;
+  right: 0;
 }
+/* Dark Mode */
+.darkmode-btn-container {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    z-index: 1100;
+}
+#darkMode {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #fff;
+}
+.dark-mode {
+  background: #121212;
+  color: #eee;
+}
+
+.dark-mode header, .dark-mode footer {
+  background: #1f1f1f;
+}
+
+.dark-mode form {
+  background: #1e1e1e;
+  color: #eee;
+}
+
+.dark-mode input, .dark-mode textarea {
+  background: #333;
+  color: #eee;
+  border: 1px solid #555;
+}
+
 
 /* Mobile Responsive Styles */
 @media only screen and (max-width: 600px) {

@@ -8,6 +8,7 @@ require '../includes/header.php';
     <title>Login - Grey Lock</title>
     <link rel="stylesheet" type="text/css" href="assets/css/login.css">
     <script src="assets/js/login.js"></script>
+    <script src="assets/js/darkmode.js"></script>
 </head>
 <body>
     <div class="content">

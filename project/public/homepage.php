@@ -7,6 +7,7 @@ require '../includes/header.php';
     <meta charset="utf-8">
     <title>Home - Grey Lock</title>
     <link rel="stylesheet" type="text/css" href="assets/css/home.css">
+    <script src="assets/js/darkmode.js"></script>
 </head>
 <body>
     <div class="content">

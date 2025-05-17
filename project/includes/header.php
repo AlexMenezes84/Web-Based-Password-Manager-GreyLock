@@ -29,5 +29,8 @@ if (isset($_SESSION['user_id'])) {
         <?php else: ?>
             <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a>
         <?php endif; ?>
+        <div class="darkmode-btn-container">
+            <button id="darkMode" title="Dark Mode">🌓</button>
+        </div>
     </nav>
 </header>
