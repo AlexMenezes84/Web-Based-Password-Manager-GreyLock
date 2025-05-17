@@ -1,16 +1,62 @@
 /* Reuse Global Styles from home.css */
 @import url('home.css');
 
-/* Vault Page Specific Styles */
 .vault-container {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 20px;
+    max-width: 1500px;
+    margin: 40px auto;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 0; 
+}
+/* Vault Page Specific Styles */
+.vault-password-wrapper {
+    position: relative;
+    width: 100%;
 }
 
+.vault-password-wrapper input[type="password"],
+.vault-password-wrapper input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    padding-right: 36px; 
+    box-sizing: border-box;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    background: #fafafa;
+}
+
+.vault-password-wrapper .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+    user-select: none;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Make sure all action buttons are the same size */
+.vault-action-btn {
+    width: 100%;
+    padding: 10px;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    transition: background 0.2s;
+}
+
+.vault-action-btn:hover {
+    background: #555;
+}
 .container h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -41,13 +87,13 @@
     z-index: 1100;
     background: #fff;
     padding: 32px 24px;
-    border-radius: 10px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     max-width: 95vw;
     width: 400px;
     max-height: calc(100vh - 80px); 
     overflow-y: auto;
     box-sizing: border-box;
+    border-radius: 0; 
 }
 
 /* Modal Form Elements */
@@ -65,22 +111,23 @@
 #modifyPasswordModal input {
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
+    border-radius: 0; 
 }
 
 #modifyPasswordModal button {
     padding: 10px;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
+    border-radius: 0; 
 }
 
 #modifyPasswordModal button[type="submit"] {
     background-color: #828282;
     color: #fff;
+    border-radius: 0; 
 }
 
 #modifyPasswordModal button[type="submit"]:hover {
@@ -90,6 +137,7 @@
 #modifyPasswordModal button[type="button"] {
     background-color: #6c757d;
     color: #fff;
+    border-radius: 0; 
 }
 
 #modifyPasswordModal button[type="button"]:hover {
@@ -107,6 +155,7 @@
         max-height: 96vh;
         font-size: 16px;
         transform: translateX(-50%);
+        border-radius: 0; 
     }
 }
 /* Dark Mode */
@@ -116,6 +165,7 @@
 .dark-mode #modifyPasswordModal {
   background: #121212;
   color: #eee;
+  border-radius: 0; 
 }
 /* Table Styles */
 table {
@@ -124,21 +174,25 @@ table {
     margin: 20px 0;
     font-size: 16px;
     text-align: left;
+    border-radius: 0; 
 }
 
 table thead {
     background: #828282;
     color: #fff;
+    border-radius: 0; 
 }
 
 table thead th {
     padding: 10px;
     text-align: center;
+    border-radius: 0; 
 }
 
 table tbody tr {
     border-bottom: 1px solid #ddd;
     transition: background 0.3s ease;
+    border-radius: 0; 
 }
 
 table tbody tr:hover {
@@ -148,27 +202,33 @@ table tbody tr:hover {
 table tbody td {
     padding: 10px;
     text-align: center;
+    border-radius: 0; 
 }
 
 table tbody td input[type="password"] {
     border: 1px solid #ddd;
-    border-radius: 4px;
     padding: 5px;
-    width: 80%;
     font-size: 14px;
+    border-radius: 0; 
 }
 
 table tbody td button {
     padding: 5px 10px;
     border: none;
-    border-radius: 4px;
     background: #828282;
     color: #fff;
     font-size: 14px;
     cursor: pointer;
     transition: background 0.3s ease;
+    border-radius: 0; 
 }
 
 table tbody td button:hover {
     background: #6d6d6d;
+}
+input,
+button,
+select,
+textarea {
+    border-radius: 0 !important;
 }
