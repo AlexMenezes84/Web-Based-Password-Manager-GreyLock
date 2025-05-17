@@ -6,7 +6,7 @@ require '../includes/header.php';
 <head>
     <meta charset="utf-8">
     <title>Forgot Password - Grey Lock</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/signup.css"> <!-- Reusing signup.css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/signup.css"> 
 </head>
 <body>
     <div class="content">

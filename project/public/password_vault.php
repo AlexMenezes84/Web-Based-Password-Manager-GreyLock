@@ -25,6 +25,7 @@ $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Password Vault - Grey Lock</title>
     <link rel="stylesheet" type="text/css" href="assets/css/vault.css">
     <script src="assets/js/vault.js" defer></script>
+    <script src="assets/js/darkmode.js"></script>
 </head>
 <body>
     <main>

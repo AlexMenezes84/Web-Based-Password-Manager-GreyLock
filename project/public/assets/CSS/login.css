@@ -51,6 +51,11 @@ footer {
   bottom: 0;
   width: 100%;
 }
+/* Dark Mode */
+.dark-mode .content {
+  background: #121212;
+  color: #eee;
+}
 
 /* Mobile Responsive Styles */
 @media only screen and (max-width: 600px) {
