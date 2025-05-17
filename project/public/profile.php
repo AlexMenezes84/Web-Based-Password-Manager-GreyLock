@@ -2,6 +2,7 @@
 session_start();
 require '../includes/dbh.inc.php';
 require '../includes/header.php';
+require_once '../includes/activity_log.inc.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -28,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_email'])) {
         if ($update->execute([$new_email, $_SESSION['user_id']])) {
             $success = "Email updated successfully.";
             $user['email'] = $new_email;
+            log_user_activity($pdo, $_SESSION['user_id'], $_SESSION['username'], 'Changed email');
         } else {
             $error = "Error updating email.";
         }
@@ -58,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
         $update = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
         if ($update->execute([$hashed, $_SESSION['user_id']])) {
             $success = "Master password changed successfully.";
+            log_user_activity($pdo, $_SESSION['user_id'], $_SESSION['username'], 'Changed master password');
         } else {
             $error = "Error updating password.";
         }
@@ -136,7 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             document.getElementById('emailForm').style.display = (type === 'email') ? 'block' : 'none';
             document.getElementById('passwordForm').style.display = (type === 'password') ? 'block' : 'none';
         }
-        // Optionally, show the form again after submission if there was an error
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_email']) && $error): ?>
             showForm('email');
         <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password']) && $error): ?>
