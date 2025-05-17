@@ -67,6 +67,24 @@ button:hover {
     background: #121212;
     color: #eee;
 }
+.success-message {
+    color: #155724;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.error-message {
+    color: #721c24;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+}
 /* Mobile Responsive Styles */
 @media only screen and (max-width: 600px) {
     .contact-container {

@@ -15,10 +15,16 @@ if (isset($_SESSION['user_id'])) {
 ?>
 <header>
     <img src="assets/logo.png" alt="Grey Lock Logo">
-    <?php if ($username): ?>
-        <span class="welcome-message">Welcome, <?= htmlspecialchars($username) ?>!</span>
+   <?php if ($username): ?>
+        <div class="user-info-header">
+            <span class="welcome-message">Welcome, <?= htmlspecialchars($username) ?>!</span>
+            <a href="profile.php" class="profile-link">My Profile</a>
+        </div>
     <?php endif; ?>
+    <br>
     <h1>Grey Lock</h1>
+    <br>
+    
     <nav>
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/">Home</a>
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/about">About</a>
