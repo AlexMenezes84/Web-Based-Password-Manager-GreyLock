@@ -11,7 +11,7 @@ require '../includes/header.php';
     <script src="assets/js/darkmode.js"></script>
 </head>
 <body>
-      <div class="content">
+      <div class="signup-container">
         <h2>Create an Account</h2>
 
         <?php
@@ -30,7 +30,6 @@ require '../includes/header.php';
                 <p id="username-error" style="color: red;">Username already exists.</p>
             <?php endif; ?>
             <br>
-
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" value="<?php echo $old_email; ?>" required>
             <?php if ($error === 'invalidemail'): ?>
@@ -55,9 +54,10 @@ require '../includes/header.php';
             <?php endif; ?>
 
             <button type="submit">Sign Up</button>
+            <p>Already have an account? <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a></p>
+
         </form>
 
-        <p>Already have an account? <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a></p>
     </div>
     <footer>
         &copy; 2025 Grey Lock

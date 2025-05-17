@@ -29,7 +29,7 @@ $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <main>
-        <div class="container">
+        <div class="vault-container">
             <h2>Your Password Vault</h2>
             <!-- Add New Button -->
             <button id="addNewButton">Add New</button>
@@ -154,5 +154,8 @@ $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </main>
+     <footer>
+        &copy; 2025 Grey Lock
+    </footer>
 </body>
 </html>

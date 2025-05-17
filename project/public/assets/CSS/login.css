@@ -2,24 +2,24 @@
 @import url('home.css');
 
 
-/* Form Container */
-.content {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.container {
+    text-align: left;
+    margin: 10px auto;
+    padding: 20px;
 }
 
-.content h2 {
-  text-align: center;
-  margin-bottom: 20px;
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background: #ffffff;
 }
 
 .content input[type="text"],
 .content input[type="password"],
-.content input[type="email"] {
+.content input[type="email"],
+.form-checkbox input[type="checkbox"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -36,9 +36,68 @@
   color: #fff;
   font-size: 16px;
 }
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    width: auto;
+}
+
+.form-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.form-checkbox label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+
 
 .content button:hover {
   background-color: #828282;
+}
+form {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+}
+
+form h2 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+/* Error Message Styling */
+.error-message {
+    color: #d32f2f;
+    background: #ffeaea;
+    border: 1px solid #f5c2c7;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    text-align: center;
+    display: block;
 }
 
 /* Footer */
@@ -52,7 +111,7 @@ footer {
   width: 100%;
 }
 /* Dark Mode */
-.dark-mode .content {
+.dark-mode .login-container {
   background: #121212;
   color: #eee;
 }

@@ -11,7 +11,7 @@ require '../includes/header.php';
     <script src="assets/js/darkmode.js"></script>
 </head>
 <body>
-    <div class="content">
+    <div class="login-container">
         <h2>Login Page</h2>
         <form action="../includes/login.inc.php" method="POST">
             <label for="username">Username:</label>
@@ -20,26 +20,27 @@ require '../includes/header.php';
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <br><br>
-            <label>
-                <input type="checkbox" name="remember"> Remember Me
-            </label>
+           <div class="form-checkbox">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember Me</label>
+            </div>
+            <?php
+                if (isset($_GET['error'])) {
+                    if ($_GET['error'] === 'emptyfields') {
+                        echo "<p style='color: red;'>Please fill in all fields.</p>";
+                    } elseif ($_GET['error'] === 'invalidcredentials') {
+                        echo "<p style='color: red;'>Invalid username or password.</p>";
+                    }
+                }
+            ?>
             <br><br>
             <button type="submit">Login</button>
+            <p>Don't have an account? <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup">Sign Up</a></p>
+            <p><a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/forgot_password">Forgot Password?</a></p>
         </form>
-        <p>Don't have an account? <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup">Sign Up</a></p>
-        <p><a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/forgot_password">Forgot Password?</a></p>
     </div>
     <footer>
         &copy; 2025 Grey Lock
     </footer>
 </body>
 </html>
-<?php
-if (isset($_GET['error'])) {
-    if ($_GET['error'] === 'emptyfields') {
-        echo "<p style='color: red;'>Please fill in all fields.</p>";
-    } elseif ($_GET['error'] === 'invalidcredentials') {
-        echo "<p style='color: red;'>Invalid username or password.</p>";
-    }
-}
-?>
