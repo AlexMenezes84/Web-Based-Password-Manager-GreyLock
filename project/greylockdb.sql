@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 01:16 PM
+-- Generation Time: May 18, 2025 at 06:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -67,7 +67,8 @@ INSERT INTO `login_logs` (`id`, `username`, `status`, `ip_address`, `created_at`
 (4, 'a', 'SUCCESS', '::1', '2025-05-17 19:41:53'),
 (5, 'a', 'SUCCESS', '::1', '2025-05-17 21:05:50'),
 (6, 'a', 'SUCCESS', '::1', '2025-05-17 21:10:17'),
-(7, 'a', 'SUCCESS', '::1', '2025-05-18 11:48:34');
+(7, 'a', 'SUCCESS', '::1', '2025-05-18 11:48:34'),
+(8, 'admin', 'SUCCESS', '::1', '2025-05-18 17:30:59');
 
 -- --------------------------------------------------------
 
@@ -127,17 +128,20 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `blocked` tinyint(1) NOT NULL DEFAULT 0,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'a', '$2y$10$.rnLdns156rz4oWR9yM5geVlOEn60f8HffvyTzsGr6pJWWTa5UmWm', 'aa@a.com', '2025-05-05 18:12:40', '2025-05-17 20:48:45'),
-(2, 'b', '$2y$10$5O5a6wCsUoqoMoq.HG3.7OJ19qRklhgCzM/M042idFwQ1P4JS9Xem', 'b@a.com', '2025-05-05 18:42:59', '2025-05-05 18:42:59'),
-(3, 'q', '$2y$10$bPPxGxJPjduD8UATczM5POgGXbqqM1br0z3RUQudj51ocmhq0e7UG', 's@a.com', '2025-05-05 19:05:44', '2025-05-05 19:05:44');
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`, `updated_at`, `blocked`, `is_admin`) VALUES
+(1, 'a', '$2y$10$.rnLdns156rz4oWR9yM5geVlOEn60f8HffvyTzsGr6pJWWTa5UmWm', 'aa@a.com', '2025-05-05 18:12:40', '2025-05-17 20:48:45', 0, 0),
+(2, 'b', '$2y$10$5O5a6wCsUoqoMoq.HG3.7OJ19qRklhgCzM/M042idFwQ1P4JS9Xem', 'b@a.com', '2025-05-05 18:42:59', '2025-05-05 18:42:59', 0, 0),
+(3, 'q', '$2y$10$bPPxGxJPjduD8UATczM5POgGXbqqM1br0z3RUQudj51ocmhq0e7UG', 's@a.com', '2025-05-05 19:05:44', '2025-05-05 19:05:44', 0, 0),
+(0, 'admin', '$2y$10$8q/QPOLge/LhCK8yAd5Ftu5KHcpT6LmnYQYvKbTgrf6Rw7pt1E9FC', 'greylockwebsite@proton.me', '2025-05-18 16:27:48', '2025-05-18 16:28:33', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -198,7 +202,7 @@ ALTER TABLE `user_activity_logs`
 -- AUTO_INCREMENT for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user_activity_logs`
