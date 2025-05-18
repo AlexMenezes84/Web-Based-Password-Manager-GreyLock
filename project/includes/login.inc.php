@@ -41,26 +41,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Set session variables
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-
-            // Set a cookie if "Remember Me" is checked
-            if ($remember) {
-                setcookie('user_id', $user['id'], time() + (30 * 24 * 60 * 60), "/"); // 30 days
-                setcookie('username', $user['username'], time() + (30 * 24 * 60 * 60), "/");
+        if ($user) {
+            if (!empty($user['blocked']) && $user['blocked']) {
+                log_login_attempt($pdo, $username, 'BLOCKED_USER');
+                header("Location: ../public/login.php?error=blocked");
+                exit();
             }
+            if (password_verify($password, $user['password'])) {
+                // Set session variables
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['is_admin'] = !empty($user['is_admin']);
+                // Set a cookie if "Remember Me" is checked
+                if ($remember) {
+                    setcookie('user_id', $user['id'], time() + (30 * 24 * 60 * 60), "/"); // 30 days
+                    setcookie('username', $user['username'], time() + (30 * 24 * 60 * 60), "/");
+                    setcookie('is_admin', $user['is_admin'], time() + (30 * 24 * 60 * 60), "/");
+                }
 
-            log_login_attempt($pdo, $username, 'SUCCESS');
-            // Redirect to the dashboard or vault page
-            header("Location: ../public/password_vault?login=success");
-            exit();
+                log_login_attempt($pdo, $username, 'SUCCESS');
+                // Redirect to the dashboard or vault page
+                header("Location: ../public/password_vault?login=success");
+                exit();
+            } else {
+                log_login_attempt($pdo, $username, 'INVALID_CREDENTIALS');
+                header("Location: ../public/login.php?error=invalidcredentials");
+                exit();
+            }
         } else {
             log_login_attempt($pdo, $username, 'INVALID_CREDENTIALS');
             header("Location: ../public/login.php?error=invalidcredentials");
             exit();
         }
+    } catch (PDOException $e) {
+        log_login_attempt($pdo, $username, 'DB_ERROR');
+        header("Location: ../public/login.php?error=databaseerror");
+        exit();
     } catch (PDOException $e) {
         log_login_attempt($pdo, $username, 'DB_ERROR');
         echo "Error: " . $e->getMessage();

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2025 at 10:27 AM
+-- Generation Time: May 18, 2025 at 01:16 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,33 +35,39 @@ CREATE TABLE `contact_messages` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `logs`
+-- Dumping data for table `contact_messages`
 --
 
-CREATE TABLE `logs` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `action` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `contact_messages` (`id`, `name`, `email`, `message`, `created_at`) VALUES
+(0, 'test', 'test@gmail.com', 'This is a test message!', '2025-05-17 17:42:59');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pages`
+-- Table structure for table `login_logs`
 --
 
-CREATE TABLE `pages` (
+CREATE TABLE `login_logs` (
   `id` int(11) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `slug` varchar(100) NOT NULL,
-  `content` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `username` varchar(255) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `login_logs`
+--
+
+INSERT INTO `login_logs` (`id`, `username`, `status`, `ip_address`, `created_at`) VALUES
+(1, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-17 19:16:49'),
+(2, 'as', 'INVALID_CREDENTIALS', '::1', '2025-05-17 19:21:27'),
+(3, 'a', 'SUCCESS', '::1', '2025-05-17 19:25:08'),
+(4, 'a', 'SUCCESS', '::1', '2025-05-17 19:41:53'),
+(5, 'a', 'SUCCESS', '::1', '2025-05-17 21:05:50'),
+(6, 'a', 'SUCCESS', '::1', '2025-05-17 21:10:17'),
+(7, 'a', 'SUCCESS', '::1', '2025-05-18 11:48:34');
 
 -- --------------------------------------------------------
 
@@ -85,7 +91,8 @@ CREATE TABLE `passwords` (
 --
 
 INSERT INTO `passwords` (`id`, `user_id`, `service_name`, `website_link`, `service_username`, `encrypted_password`, `created_at`, `updated_at`) VALUES
-(3, 1, 'test1', 'http://test1.com', 'test', 'CaXQKXvOSovMTL6N49QOYDo6QVhpUkplWnZrK2dIdjV6MkV3TFRaZz09', '2025-05-05 22:36:52', '2025-05-05 22:36:52');
+(0, 1, 'DMU', 'www.dmu.ac.uk', 'p12345', 'O6r5TTioE8X3xrlwDO/ifDo6UXVCRnMvZ3hjNUVuaExhQkZuclVwQT09', '2025-05-17 17:50:09', '2025-05-17 17:50:09'),
+(3, 1, 'test1', 'http://test1.com', 'test', '/bZr33TKEMiBvJWFq85G+VBrUUp1SE5OVE9YMUxYTDMzY3Q3MFE9PQ==', '2025-05-05 22:36:52', '2025-05-17 16:13:11');
 
 -- --------------------------------------------------------
 
@@ -128,9 +135,31 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'a', '$2y$10$.rnLdns156rz4oWR9yM5geVlOEn60f8HffvyTzsGr6pJWWTa5UmWm', 'a@a.com', '2025-05-05 18:12:40', '2025-05-05 18:12:40'),
+(1, 'a', '$2y$10$.rnLdns156rz4oWR9yM5geVlOEn60f8HffvyTzsGr6pJWWTa5UmWm', 'aa@a.com', '2025-05-05 18:12:40', '2025-05-17 20:48:45'),
 (2, 'b', '$2y$10$5O5a6wCsUoqoMoq.HG3.7OJ19qRklhgCzM/M042idFwQ1P4JS9Xem', 'b@a.com', '2025-05-05 18:42:59', '2025-05-05 18:42:59'),
 (3, 'q', '$2y$10$bPPxGxJPjduD8UATczM5POgGXbqqM1br0z3RUQudj51ocmhq0e7UG', 's@a.com', '2025-05-05 19:05:44', '2025-05-05 19:05:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_activity_logs`
+--
+
+CREATE TABLE `user_activity_logs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `activity` varchar(255) DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_activity_logs`
+--
+
+INSERT INTO `user_activity_logs` (`id`, `user_id`, `username`, `activity`, `ip_address`, `created_at`) VALUES
+(1, 1, 'a', 'Changed email', '::1', '2025-05-17 21:48:45');
 
 --
 -- Indexes for dumped tables
@@ -143,18 +172,10 @@ ALTER TABLE `contact_messages`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `logs`
+-- Indexes for table `login_logs`
 --
-ALTER TABLE `logs`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `pages`
---
-ALTER TABLE `pages`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `slug` (`slug`);
+ALTER TABLE `login_logs`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `passwords`
@@ -164,74 +185,26 @@ ALTER TABLE `passwords`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for tY (`id`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`able `password_resets`
+-- Indexes for table `user_activity_logs`
 --
-ALTER TABLE `password_resets`
+ALTER TABLE `user_activity_logs`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEemail`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `contact_messages`
+-- AUTO_INCREMENT for table `login_logs`
 --
-ALTER TABLE `contact_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `login_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `logs`
+-- AUTO_INCREMENT for table `user_activity_logs`
 --
-ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pages`
---
-ALTER TABLE `pages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `passwords`
---
-ALTER TABLE `passwords`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `password_resets`
---
-ALTER TABLE `password_resets`
+ALTER TABLE `user_activity_logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `logs`
---
-ALTER TABLE `logs`
-  ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `passwords`
---
-ALTER TABLE `passwords`
-  ADD CONSTRAINT `passwords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -31,6 +31,10 @@ require '../includes/header.php';
                         echo "<p style='color: red;'>Please fill in all fields.</p>";
                     } elseif ($_GET['error'] === 'invalidcredentials') {
                         echo "<p style='color: red;'>Invalid username or password.</p>";
+                    } elseif ($_GET['error'] === 'blocked') {
+                        echo "<p style='color: red;'>Your account has been blocked. Please contact support.</p>";
+                    } else {
+                        echo "<p style='color: red;'>An unknown error occurred. Please try again.</p>";
                     }
                 }
             ?>
