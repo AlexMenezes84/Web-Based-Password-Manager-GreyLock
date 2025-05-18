@@ -24,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':id', $password_id, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-        header("Location: ../public/password_vault.php?success=Password updated successfully");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?success=Password updated successfully");
         exit();
     } else {
-        header("Location: ../public/password_vault.php?error=Failed to update password");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?error=Failed to update password");
         exit();
     }
 }

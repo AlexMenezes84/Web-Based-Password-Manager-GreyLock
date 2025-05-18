@@ -13,13 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
 
-        header("Location: ../public/password_vault.php?success=deleted");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?success=deleted");
         exit();
     } catch (PDOException $e) {
-        header("Location: ../public/password_vault.php?error=deletefailed");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?error=deletefailed");
         exit();
     }
 } else {
-    header("Location: ../public/password_vault.php");
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault");
     exit();
 }

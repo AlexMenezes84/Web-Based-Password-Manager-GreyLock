@@ -5,7 +5,7 @@ require '../includes/header.php';
 
 // Simple admin check (replace with your own logic)
 if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
-    header("Location: ../public/login.php");
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login");
     exit();
 }
 

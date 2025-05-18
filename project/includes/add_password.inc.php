@@ -6,7 +6,7 @@ require 'config.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the user is logged in
     if (!isset($_SESSION['user_id'])) {
-        header("Location: ../public/login.php");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login");
         exit();
     }
 
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate inputs
     if (empty($service_name) || empty($website_link) || empty($service_username) || empty($password)) {
-        header("Location: ../public/password_vault.php?error=emptyfields");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?error=emptyfields");
         exit();
     }
 
@@ -32,13 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare($sql);
 
     if ($stmt->execute([$user_id, $service_name, $website_link, $service_username, $encrypted_password])) {
-        header("Location: ../public/password_vault.php?success=added");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?success=added");
         exit();
     } else {
-        header("Location: ../public/password_vault.php?error=sqlerror");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?error=sqlerror");
         exit();
     }
 } else {
-    header("Location: ../public/password_vault.php");
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault");
     exit();
 }

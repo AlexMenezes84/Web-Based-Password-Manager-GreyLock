@@ -91,6 +91,14 @@ $app->get('/dashboard', function (Request $request, Response $response) {
     $response->getBody()->write($html);
     return $response;
 });
+// Honeypot Vault Page Route
+$app->get('/vault', function (Request $request, Response $response) {
+    ob_start();
+    include 'honeypot_vault.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
 
 // Modify Page Route
 $app->post('/modify_password', function ($request, $response) {

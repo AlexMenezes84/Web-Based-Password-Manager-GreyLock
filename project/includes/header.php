@@ -3,8 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$username = null;
-$is_admin = false;
+$username = $_SESSION['username'] ?? null;
+$is_admin = $_SESSION['is_admin'] ?? 0;
+$is_honeypot = !empty($_SESSION['honeypot_vault']);
 if (isset($_SESSION['user_id'])) {
     require 'dbh.inc.php';
     $stmt = $pdo->prepare("SELECT username, is_admin FROM users WHERE id = :user_id");
