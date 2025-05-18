@@ -53,7 +53,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html>
 <head>
     <title>Admin Dashboard - Grey Lock</title>
-    <link rel="stylesheet" href="assets/css/vault.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <script src="assets/js/darkmode.js"></script>
 
     <style>
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 30px;}
@@ -64,7 +65,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-    <div class="profile-container">
+    <div class="dashboard-container">
         <h2>Admin Dashboard</h2>
         <?php if (!empty($message)): ?>
             <div class="success-message"><?= htmlspecialchars($message) ?></div>
