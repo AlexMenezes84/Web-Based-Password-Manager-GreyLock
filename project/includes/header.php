@@ -4,13 +4,15 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $username = null;
+$is_admin = false;
 if (isset($_SESSION['user_id'])) {
     require 'dbh.inc.php';
-    $stmt = $pdo->prepare("SELECT username FROM users WHERE id = :user_id");
+    $stmt = $pdo->prepare("SELECT username, is_admin FROM users WHERE id = :user_id");
     $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     $username = $user['username'] ?? null;
+    $is_admin = !empty($user['is_admin']);
 }
 ?>
 <header>
@@ -29,6 +31,9 @@ if (isset($_SESSION['user_id'])) {
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/">Home</a>
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/about">About</a>
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/contact">Contact Us</a>
+        <?php if ($is_admin): ?>
+        <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/dashboard.php">Admin Dashboard</a>
+        <?php endif; ?>
         <?php if ($username): ?>
             <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault">Vault</a>
             <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/logout">Logout</a>

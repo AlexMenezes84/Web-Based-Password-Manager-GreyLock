@@ -83,6 +83,14 @@ $app->get('/logout', function (Request $request, Response $response) {
     $response->getBody()->write($html);
     return $response;
 });
+// Dashboard Page Route
+$app->get('/dashboard', function (Request $request, Response $response) {
+    ob_start();
+    include 'dashboard.php';
+    $html = ob_get_clean();
+    $response->getBody()->write($html);
+    return $response;
+});
 
 // Modify Page Route
 $app->post('/modify_password', function ($request, $response) {
