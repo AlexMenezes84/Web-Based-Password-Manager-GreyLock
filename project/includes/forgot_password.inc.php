@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 
     if (!$email) {
-        header("Location: ../public/forgot_password.php?error=invalidemail");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/forgot_password?error=invalidemail");
         exit();
     }
 
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         if ($stmt->rowCount() === 0) {
-            header("Location: ../public/forgot_password.php?error=emailnotfound");
+            header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/forgot_password?error=emailnotfound");
             exit();
         }
 
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         // Send the reset link via email
-        $resetLink = "http://localhost/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/reset_password.php?token=$token";
+        $resetLink = "http://localhost/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/reset_password?token=$token";
         $subject = "Password Reset Request";
         $message = "Hello,\n\nWe received a request to reset your password. Click the link below to reset your password:\n\n$resetLink\n\nIf you did not request this, please ignore this email.\n\nThis link will expire in 1 hour.";
         $headers = "From: no-reply@greylock.com\r\n";
@@ -42,16 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
         if (mail($email, $subject, $message, $headers)) {
-            header("Location: ../public/forgot_password.php?success=emailsent");
+            header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/forgot_password?success=emailsent");
             exit();
         } else {
-            header("Location: ../public/forgot_password.php?error=emailfailed");
+            header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/forgot_password?error=emailfailed");
             exit();
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    header("Location: ../public/forgot_password.php");
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/forgot_password");
     exit();
 }

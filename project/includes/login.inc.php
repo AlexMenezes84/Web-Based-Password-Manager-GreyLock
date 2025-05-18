@@ -4,6 +4,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require 'dbh.inc.php'; // Include the database connection
     session_start(); // Start the session
 
+    // Brute force protection: track attempts in session
+    if (!isset($_SESSION['login_attempts'])) {
+        $_SESSION['login_attempts'] = 0;
+    }
+    if (!isset($_SESSION['last_attempt_time'])) {
+        $_SESSION['last_attempt_time'] = time();
+    }
+    // Reset attempts after 15 minutes of inactivity
+    if (time() - $_SESSION['last_attempt_time'] > 900) {
+        $_SESSION['login_attempts'] = 0;
+    }
+
     // Get the real client IP address
     function get_client_ip() {
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -25,12 +37,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Sanitize and validate input
     $username = filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $password = $_POST['password']; 
+    $password = $_POST['password'];
     $remember = isset($_POST['remember']); // Check if "Remember Me" is selected
 
     if (empty($username) || empty($password)) {
         log_login_attempt($pdo, $username, 'EMPTY_FIELDS');
         header("Location: ../public/login.php?error=emptyfields");
+        exit();
+    }
+
+    // Brute force threshold
+    $honeypot_threshold = 5;
+    if ($_SESSION['login_attempts'] >= $honeypot_threshold) {
+        // Fetch real user data
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $vault = [];
+        if ($user) {
+            $pstmt = $pdo->prepare("SELECT service_name, website_link, service_username FROM passwords WHERE user_id = ?");
+            $pstmt->execute([$user['id']]);
+            $realVault = $pstmt->fetchAll(PDO::FETCH_ASSOC);
+
+            //  Obfuscate/Salt Data
+            foreach ($realVault as $entry) {
+                $fakeUser = $entry['service_username'] . rand(100,999);
+                $fakePass = bin2hex(random_bytes(6)); // 12-char hex
+                $vault[] = [
+                    'service_name'     => htmlspecialchars($entry['service_name']),     
+                    'website_link'     => htmlspecialchars($entry['website_link']),      
+                    'service_username' => htmlspecialchars($fakeUser),                   
+                    'fake_password'    => htmlspecialchars($fakePass)  
+                ];
+            }
+        }
+
+        // Store in session
+        $_SESSION['honeypot_vault'] = $vault;
+        $_SESSION['honeypot_user'] = $username;
+
+         // Set fake login session variables for realism
+        $_SESSION['user_id'] = 1; 
+        $_SESSION['username'] = $username; 
+        $_SESSION['is_admin'] = 0; 
+
+        // Optionally log this event as a honeypot trigger
+        log_login_attempt($pdo, $username, 'HONEYPOT_TRIGGERED');
+
+        // Redirect to honeypot vault
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/vault");
         exit();
     }
 
@@ -59,29 +115,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     setcookie('is_admin', $user['is_admin'], time() + (30 * 24 * 60 * 60), "/");
                 }
 
+                // Reset brute force counter on success
+                $_SESSION['login_attempts'] = 0;
+
                 log_login_attempt($pdo, $username, 'SUCCESS');
                 // Redirect to the dashboard or vault page
-                header("Location: ../public/password_vault?login=success");
+                header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?login=success");
                 exit();
             } else {
+                // Increment brute force counter on failure
+                $_SESSION['login_attempts']++;
+                $_SESSION['last_attempt_time'] = time();
+
                 log_login_attempt($pdo, $username, 'INVALID_CREDENTIALS');
-                header("Location: ../public/login.php?error=invalidcredentials");
+                header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login?error=invalidcredentials");
                 exit();
             }
         } else {
+            // Increment brute force counter on failure
+            $_SESSION['login_attempts']++;
+            $_SESSION['last_attempt_time'] = time();
+
             log_login_attempt($pdo, $username, 'INVALID_CREDENTIALS');
-            header("Location: ../public/login.php?error=invalidcredentials");
+            header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login?error=invalidcredentials");
             exit();
         }
     } catch (PDOException $e) {
         log_login_attempt($pdo, $username, 'DB_ERROR');
-        header("Location: ../public/login.php?error=databaseerror");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login?error=databaseerror");
         exit();
-    } catch (PDOException $e) {
-        log_login_attempt($pdo, $username, 'DB_ERROR');
-        echo "Error: " . $e->getMessage();
     }
 } else {
-    header("Location: ../public/login.php");
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login");
     exit();
 }

@@ -3,6 +3,17 @@ session_start();
 require '../includes/dbh.inc.php';
 require '../includes/header.php';
 require_once '../includes/activity_log.inc.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!empty($_SESSION['honeypot_vault'])) {
+    // Option 1: Redirect to honeypot vault
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/vault");
+    exit();
+
+}
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");

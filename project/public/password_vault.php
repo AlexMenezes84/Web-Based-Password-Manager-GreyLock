@@ -2,6 +2,14 @@
 require '../includes/header.php';
 require '../includes/config.php';
 require '../includes/decrypt_password.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// If honeypot session is active, redirect to honeypot vault
+if (!empty($_SESSION['honeypot_vault'])) {
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/vault");
+    exit();
+}
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");

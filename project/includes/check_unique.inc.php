@@ -4,7 +4,7 @@ if (isset($_GET['field']) && isset($_GET['value'])) {
     require 'dbh.inc.php'; // Include the database connection
 
     $field = $_GET['field'];
-    $value = filter_var($_GET['value'], FILTER_SANITIZE_STRING);
+    $value = htmlspecialchars($_GET['value'], ENT_QUOTES, 'UTF-8');
 
     // Validate the field to prevent SQL injection
     if (!in_array($field, ['username', 'email'])) {

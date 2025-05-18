@@ -11,13 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: ../public/signup.php?error=invalidemail&username=$username&email=$email");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup?error=invalidemail&username=$username&email=$email");
         exit();
     }
 
     // Check if passwords match
     if ($password !== $confirm_password) {
-        header("Location: ../public/signup.php?error=passwordmismatch&username=$username&email=$email");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup?error=passwordmismatch&username=$username&email=$email");
         exit();
     }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate password strength
     if (!preg_match($strongPasswordRegex, $password)) {
-        header("Location: ../public/signup.php?error=weakpassword&username=$username&email=$email");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup?error=weakpassword&username=$username&email=$email");
         exit();
     }
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            header("Location: ../public/signup.php?error=usernameexists&email=$email");
+            header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup?error=usernameexists&email=$email");
             exit();
         }
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            header("Location: ../public/signup.php?error=emailexists&username=$username");
+            header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup?error=emailexists&username=$username");
             exit();
         }
 
@@ -61,12 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':password', $hashed_password, PDO::PARAM_STR);
         $stmt->execute();
 
-        header("Location: ../public/login.php?signup=success");
+        header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login?signup=success");
         exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    header("Location: ../public/signup.php");
+    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/signup");
     exit();
 }

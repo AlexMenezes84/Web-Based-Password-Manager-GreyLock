@@ -1,45 +1,13 @@
 <?php
-require '../includes/header.php';
-require '../includes/dbh.inc.php';
-session_start();
-
-if (empty($_SESSION['username'])) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (empty($_SESSION['honeypot_vault'])) {
     header("Location: login.php");
     exit();
 }
-
-// Try to map their fake username back to a real user (strip trailing digits)
-$base  = preg_replace('/\d+$/', '', $_SESSION['username']);
-$uStmt = $pdo->prepare("SELECT id, email FROM users WHERE username = ?");
-$uStmt->execute([$base]);
-$real = $uStmt->fetch(PDO::FETCH_ASSOC);
-
-if ($real) {
-    // Pull real vault entries
-    $pStmt = $pdo->prepare("
-      SELECT service_name, website_link, service_username
-        FROM passwords
-       WHERE user_id = ?
-    ");
-    $pStmt->execute([$real['id']]);
-    $realPasswords = $pStmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    $realPasswords = [];
-}
-
-// Build fake entries
-$passwords = [];
-foreach ($realPasswords as $r) {
-    $fakeU = $r['service_username'] . rand(100,999);
-    $fakeP = bin2hex(random_bytes(6)); // 12‐char hex
-    $passwords[] = [
-      'service_name'     => htmlspecialchars($r['service_name']),
-      'website_link'     => htmlspecialchars($r['website_link']),
-      'service_username' => htmlspecialchars($fakeU),
-      'fake_password'    => htmlspecialchars($fakeP)
-    ];
-}
-
+$passwords = $_SESSION['honeypot_vault'];
+require '../includes/header.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,6 +16,7 @@ foreach ($realPasswords as $r) {
   <title>Secure Vault – Grey Lock</title>
   <link rel="stylesheet" href="assets/css/vault.css">
   <script src="assets/js/vault.js" defer></script>
+  <script src="assets/js/darkmode.js"></script>
 </head>
 <body>
   <main>
@@ -63,8 +32,7 @@ foreach ($realPasswords as $r) {
           <?php foreach ($passwords as $pw): ?>
           <tr>
             <td><?= $pw['service_name'] ?></td>
-            <td><a href="<?= $pw['website_link'] ?>" target="_blank">
-                 <?= $pw['website_link'] ?></a></td>
+            <td><a href="<?= $pw['website_link'] ?>" target="_blank"><?= $pw['website_link'] ?></a></td>
             <td><?= $pw['service_username'] ?></td>
             <td>
               <input type="password" value="<?= $pw['fake_password'] ?>" readonly>
