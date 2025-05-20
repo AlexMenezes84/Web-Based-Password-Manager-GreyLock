@@ -1,26 +1,28 @@
 <?php
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$username = $_SESSION['username'] ?? null;
-$is_admin = $_SESSION['is_admin'] ?? 0;
-$is_honeypot = !empty($_SESSION['honeypot_vault']);
-if (isset($_SESSION['user_id'])) {
+$is_honeypot = !empty($_SESSION['honeypot_mode']);
+$displayUser = $is_honeypot ? ($_SESSION['honeypot_user'] ?? null) : ($_SESSION['username'] ?? null);
+$is_admin = !$is_honeypot && !empty($_SESSION['is_admin']);
+
+if (!$is_honeypot && isset($_SESSION['user_id'])) {
     require 'dbh.inc.php';
     $stmt = $pdo->prepare("SELECT username, is_admin FROM users WHERE id = :user_id");
     $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $username = $user['username'] ?? null;
+    $displayUser = $user['username'] ?? $displayUser;
     $is_admin = !empty($user['is_admin']);
 }
 ?>
 <header>
     <img src="assets/logo.png" alt="Grey Lock Logo">
-   <?php if ($username): ?>
+   <?php if ($displayUser): ?>
         <div class="user-info-header">
-            <span class="welcome-message">Welcome, <?= htmlspecialchars($username) ?>!</span>
+            <span class="welcome-message">Welcome, <?= htmlspecialchars($displayUser) ?>!</span>
             <a href="profile.php" class="profile-link">My Profile</a>
         </div>
     <?php endif; ?>
@@ -35,11 +37,15 @@ if (isset($_SESSION['user_id'])) {
         <?php if ($is_admin): ?>
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/dashboard.php">Admin Dashboard</a>
         <?php endif; ?>
-        <?php if ($username): ?>
-            <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault">Vault</a>
-            <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/logout">Logout</a>
+        <?php if ($displayUser): ?>
+            <?php if ($is_honeypot): ?>
+                <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/honeypot_vault.php">Vault</a>
+            <?php else: ?>
+                <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault.php">Vault</a>
+            <?php endif; ?>
+            <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/logout.php">Logout</a>
         <?php else: ?>
-            <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a>
+            <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login.php">Login</a>
         <?php endif; ?>
         <div class="darkmode-btn-container">
             <button id="darkMode" title="Dark Mode">🌓</button>
