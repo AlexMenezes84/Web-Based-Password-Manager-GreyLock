@@ -2,11 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (empty($_SESSION['honeypot_vault'])) {
+if (!isset($_SESSION['honeypot_vault'])) {
     header("Location: login.php");
     exit();
 }
 $passwords = $_SESSION['honeypot_vault'];
+$displayUser = $_SESSION['honeypot_user'] ?? 'Attacker';
 require '../includes/header.php';
 ?>
 <!DOCTYPE html>
@@ -20,7 +21,7 @@ require '../includes/header.php';
 </head>
 <body>
   <main>
-    <h2>Your Password Vault</h2>
+    <h2>Password Vault</h2>
     <table>
       <thead>
         <tr>
@@ -31,11 +32,11 @@ require '../includes/header.php';
         <?php if ($passwords): ?>
           <?php foreach ($passwords as $pw): ?>
           <tr>
-            <td><?= $pw['service_name'] ?></td>
-            <td><a href="<?= $pw['website_link'] ?>" target="_blank"><?= $pw['website_link'] ?></a></td>
-            <td><?= $pw['service_username'] ?></td>
+            <td><?= htmlspecialchars($pw['service_name']) ?></td>
+            <td><a href="<?= htmlspecialchars($pw['website_link']) ?>" target="_blank"><?= htmlspecialchars($pw['website_link']) ?></a></td>
+            <td><?= htmlspecialchars($pw['service_username']) ?></td>
             <td>
-              <input type="password" value="<?= $pw['fake_password'] ?>" readonly>
+              <input type="password" value="<?= htmlspecialchars($pw['fake_password']) ?>" readonly>
               <button onclick="togglePassword(this)">Show</button>
             </td>
           </tr>
