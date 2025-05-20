@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 06:58 PM
+-- Generation Time: May 20, 2025 at 10:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -53,22 +53,66 @@ CREATE TABLE `login_logs` (
   `username` varchar(255) NOT NULL,
   `status` varchar(50) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `forwarded_ips` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `login_logs`
 --
 
-INSERT INTO `login_logs` (`id`, `username`, `status`, `ip_address`, `created_at`) VALUES
-(1, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-17 19:16:49'),
-(2, 'as', 'INVALID_CREDENTIALS', '::1', '2025-05-17 19:21:27'),
-(3, 'a', 'SUCCESS', '::1', '2025-05-17 19:25:08'),
-(4, 'a', 'SUCCESS', '::1', '2025-05-17 19:41:53'),
-(5, 'a', 'SUCCESS', '::1', '2025-05-17 21:05:50'),
-(6, 'a', 'SUCCESS', '::1', '2025-05-17 21:10:17'),
-(7, 'a', 'SUCCESS', '::1', '2025-05-18 11:48:34'),
-(8, 'admin', 'SUCCESS', '::1', '2025-05-18 17:30:59');
+INSERT INTO `login_logs` (`id`, `username`, `status`, `ip_address`, `created_at`, `forwarded_ips`) VALUES
+(1, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-17 19:16:49', NULL),
+(2, 'as', 'INVALID_CREDENTIALS', '::1', '2025-05-17 19:21:27', NULL),
+(3, 'a', 'SUCCESS', '::1', '2025-05-17 19:25:08', NULL),
+(4, 'a', 'SUCCESS', '::1', '2025-05-17 19:41:53', NULL),
+(5, 'a', 'SUCCESS', '::1', '2025-05-17 21:05:50', NULL),
+(6, 'a', 'SUCCESS', '::1', '2025-05-17 21:10:17', NULL),
+(7, 'a', 'SUCCESS', '::1', '2025-05-18 11:48:34', NULL),
+(8, 'admin', 'SUCCESS', '::1', '2025-05-18 17:30:59', NULL),
+(9, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 18:30:56', NULL),
+(10, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 18:31:03', NULL),
+(11, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 18:31:07', NULL),
+(12, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 18:31:11', NULL),
+(13, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 18:31:14', NULL),
+(14, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-18 18:31:19', NULL),
+(15, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-18 18:39:21', NULL),
+(16, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-18 18:40:11', NULL),
+(17, 'a', 'SUCCESS', '::1', '2025-05-18 18:40:58', NULL),
+(18, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:00:36', NULL),
+(19, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:00:40', NULL),
+(20, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:00:44', NULL),
+(21, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:00:48', NULL),
+(22, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:00:52', NULL),
+(23, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-18 19:00:55', NULL),
+(24, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:05:11', NULL),
+(25, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:05:15', NULL),
+(26, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:05:19', NULL),
+(27, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:05:23', NULL),
+(28, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:05:27', NULL),
+(29, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-18 19:05:32', NULL),
+(30, 'a', 'SUCCESS', '::1', '2025-05-18 19:16:13', NULL),
+(31, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:17:16', NULL),
+(32, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:17:20', NULL),
+(33, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:17:24', NULL),
+(34, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:17:27', NULL),
+(35, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-18 19:17:30', NULL),
+(36, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-18 19:17:34', NULL),
+(37, 'a', 'SUCCESS', '::1', '2025-05-20 08:32:14', NULL),
+(38, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:45:51', NULL),
+(39, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-20 08:45:54', NULL),
+(40, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:47:28', NULL),
+(41, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:47:32', NULL),
+(42, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:47:35', NULL),
+(43, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:47:38', NULL),
+(44, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:47:42', NULL),
+(45, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-20 08:47:45', NULL),
+(46, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:35', NULL),
+(47, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:38', NULL),
+(48, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:41', NULL),
+(49, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:44', NULL),
+(50, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:47', NULL),
+(51, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-20 08:50:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -114,7 +158,8 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `email`, `token`, `expires_at`, `expires`) VALUES
-(1, 'a@a.com', 'b09a190f76e7b3308b7c26a686428c758f3c3da87292d2d07db6816d668f9cfa', '0000-00-00 00:00:00', 1746482969);
+(1, 'a@a.com', 'b09a190f76e7b3308b7c26a686428c758f3c3da87292d2d07db6816d668f9cfa', '0000-00-00 00:00:00', 1746482969),
+(0, 'alexmenezes141184@gmail.com', 'b1aca2bdc84c6d947f575a4247defde18f36cf69ecdbfbc0d8837c17a8524126', '0000-00-00 00:00:00', 1747731815);
 
 -- --------------------------------------------------------
 
@@ -141,7 +186,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`, `updat
 (1, 'a', '$2y$10$.rnLdns156rz4oWR9yM5geVlOEn60f8HffvyTzsGr6pJWWTa5UmWm', 'aa@a.com', '2025-05-05 18:12:40', '2025-05-17 20:48:45', 0, 0),
 (2, 'b', '$2y$10$5O5a6wCsUoqoMoq.HG3.7OJ19qRklhgCzM/M042idFwQ1P4JS9Xem', 'b@a.com', '2025-05-05 18:42:59', '2025-05-05 18:42:59', 0, 0),
 (3, 'q', '$2y$10$bPPxGxJPjduD8UATczM5POgGXbqqM1br0z3RUQudj51ocmhq0e7UG', 's@a.com', '2025-05-05 19:05:44', '2025-05-05 19:05:44', 0, 0),
-(0, 'admin', '$2y$10$8q/QPOLge/LhCK8yAd5Ftu5KHcpT6LmnYQYvKbTgrf6Rw7pt1E9FC', 'greylockwebsite@proton.me', '2025-05-18 16:27:48', '2025-05-18 16:28:33', 0, 1);
+(0, 'admin', '$2y$10$8q/QPOLge/LhCK8yAd5Ftu5KHcpT6LmnYQYvKbTgrf6Rw7pt1E9FC', 'greylockwebsite@proton.me', '2025-05-18 16:27:48', '2025-05-18 16:28:33', 0, 1),
+(0, 'alex', '$2y$10$JhUQCBY9OCfQgBPR4dv4dO/F6OiJRLxVfQSeH4Jg5XH3X4vpaW2Vu', 'alexmenezes141184@gmail.com', '2025-05-20 08:03:03', '2025-05-20 08:03:03', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -202,7 +248,7 @@ ALTER TABLE `user_activity_logs`
 -- AUTO_INCREMENT for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `user_activity_logs`

@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start the session only if not already started
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require 'dbh.inc.php'; // Include the database connection
@@ -16,23 +19,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['login_attempts'] = 0;
     }
 
-    // Get the real client IP address
+   // Get the external/public IP address
     function get_client_ip() {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            // HTTP_X_FORWARDED_FOR can contain multiple IPs, take the first one
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            // Trim and return the first non-empty IP
+            foreach ($ips as $ip) {
+                $ip = trim($ip);
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                    return $ip; // Return the first public IP
+                }
+            }
+            // If none are public, return the first one anyway
+            return trim($ips[0]);
+        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             return $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
         } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
             return $_SERVER['REMOTE_ADDR'];
         }
         return 'unknown';
     }
 
+    // Get all forwarded IPs (if any)
+    function get_forwarded_ips() {
+        return !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;
+    }
+
     // Logging function
     function log_login_attempt($pdo, $username, $status) {
         $ip = get_client_ip();
-        $stmt = $pdo->prepare("INSERT INTO login_logs (username, status, ip_address) VALUES (?, ?, ?)");
-        $stmt->execute([$username, $status, $ip]);
+        $forwarded_ips = get_forwarded_ips();
+        $stmt = $pdo->prepare("INSERT INTO login_logs (username, status, ip_address, forwarded_ips) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$username, $status, $ip, $forwarded_ips]);
     }
 
     // Sanitize and validate input
@@ -48,6 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Brute force threshold
     $honeypot_threshold = 5;
+    // Query to fetch user by username (to check admin status before honeypot)
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Only trigger honeypot if NOT admin
+    $is_admin = ($user && !empty($user['is_admin']));
     if ($_SESSION['login_attempts'] >= $honeypot_threshold) {
         // Fetch real user data
         $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
