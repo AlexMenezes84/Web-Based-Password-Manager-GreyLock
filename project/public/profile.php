@@ -20,7 +20,7 @@
  * - header.php: Page header
  * - activity_log.inc.php: User activity logging
  * 
- * @author Alexandre De Menezes - P2724348 
+ * @author Alexandre De Menezes - P2724348
  * @version 1.0
  */
 
@@ -117,7 +117,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     <title>My Profile - Grey Lock</title>
     <link rel="stylesheet" type="text/css" href="assets/css/profile.css">
     <script src="assets/js/darkmode.js"></script>
-    
+    <style>
+        /* Inline styles for profile page */
+        .profile-action-btns {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .profile-action-btns button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .profile-action-btns button:hover {
+            background: #555;
+        }
+        .profile-form {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="profile-container">
@@ -154,11 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             <button type="submit" name="change_password">Change Password</button>
         </form>
     </div>
-   <!-- Footer -->
-    <footer class="footer">
-        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
-        <a href="about">About</a> &nbsp;|&nbsp;
-        <a href="contact">Contact</a>
+    <footer>
+        &copy; 2025 Grey Lock
     </footer>
     <script>
         /**

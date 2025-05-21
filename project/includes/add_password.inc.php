@@ -53,13 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Encrypt the password
-    $iv = random_bytes(openssl_cipher_iv_length(ENCRYPTION_METHOD)); // Generate a 16-byte IV
+    $iv = random_bytes(openssl_cipher_iv_length(ENCRYPTION_METHOD)); // Generate a secure IV
     $encrypted_password = base64_encode($iv . '::' . openssl_encrypt($password, ENCRYPTION_METHOD, ENCRYPTION_KEY, 0, $iv));
 
-    // Insert into the database
+    // Insert into the database (let MySQL auto-increment the primary key)
     $sql = "INSERT INTO passwords (user_id, service_name, website_link, service_username, encrypted_password) VALUES (?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
-    // Check for SQL errors
+
     if ($stmt->execute([$user_id, $service_name, $website_link, $service_username, $encrypted_password])) {
         header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault?success=added");
         exit();
