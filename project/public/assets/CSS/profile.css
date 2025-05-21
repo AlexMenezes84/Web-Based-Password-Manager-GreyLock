@@ -133,6 +133,28 @@
   color: #eee;
   border-radius: 0; 
 }
+/* Inline styles for profile page */
+.profile-action-btns {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.profile-action-btns button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+.profile-action-btns button:hover {
+    background: #555;
+}
+.profile-form {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
 
 /* Responsive */
 @media (max-width: 500px) {

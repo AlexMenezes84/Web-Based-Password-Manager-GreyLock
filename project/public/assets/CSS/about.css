@@ -31,3 +31,75 @@
     font-size: 16px;
     color: #555;
 }
+/* Dark Mode Support */
+.dark-mode .about-container,
+.dark-mode .about-title,
+.dark-mode .about-section-title,
+.dark-mode .about-desc,
+.dark-mode .about-list,
+.dark-mode .about-profile,
+.dark-mode .about-profile img,
+.dark-mode .about-profile-details {
+    background: #181c20;
+    color: #f3f5f7;
+}
+ body {
+            background: linear-gradient(135deg, #f7fafd 0%, #e9eef3 100%);
+            color: #23272b;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .about-container {
+            max-width: 800px;
+            margin: 60px auto 40px auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(45,140,255,0.08);
+            padding: 40px 32px;
+        }
+        .about-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2d8cff;
+        }
+        .about-section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 32px;
+            color: #23272b;
+        }
+        .about-desc {
+            font-size: 1.1em;
+            color: #4a5568;
+            margin-bottom: 18px;
+        }
+        .about-list {
+            margin-left: 20px;
+            color: #23272b;
+        }
+        .about-profile {
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .about-profile img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #2d8cff;
+            background: #e9eef3;
+        }
+        .about-profile-details {
+            font-size: 1.1em;
+        }
+        .about-profile-details strong {
+            color: #2d8cff;
+        }
+        @media (max-width: 600px) {
+            .about-container { padding: 18px 6vw; }
+            .about-profile { flex-direction: column; align-items: flex-start; }
+        }

@@ -1,26 +1,52 @@
 <?php
+/**
+ * profile.php
+ * 
+ * User profile management page for Grey Lock Password Manager.
+ * 
+ * Features:
+ * - Displays current user info (username, email)
+ * - Allows user to change email and master password
+ * - Logs user activity for changes
+ * - Redirects honeypot users to fake vault
+ * 
+ * Security:
+ * - Requires user authentication
+ * - Validates and sanitizes input
+ * - Enforces strong password policy
+ * 
+ * Dependencies:
+ * - dbh.inc.php: Database connection (PDO)
+ * - header.php: Page header
+ * - activity_log.inc.php: User activity logging
+ * 
+ * @author Alexandre De Menezes - P2724348 
+ * @version 1.0
+ */
+
 session_start();
-require '../includes/dbh.inc.php';
-require '../includes/header.php';
-require_once '../includes/activity_log.inc.php';
+require '../includes/dbh.inc.php'; // Database connection
+require '../includes/header.php';  // Page header
+require_once '../includes/activity_log.inc.php'; // Activity logging
+
+// Ensure session is started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Redirect honeypot users to fake vault
 if (!empty($_SESSION['honeypot_vault'])) {
-    // Option 1: Redirect to honeypot vault
     header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/vault");
     exit();
-
 }
 
-
+// Redirect unauthenticated users to login
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Fetch user info
+// Fetch current user info from database
 $stmt = $pdo->prepare("SELECT username, email, password FROM users WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,7 +54,10 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $success = '';
 $error = '';
 
-// Handle email change
+/**
+ * Handle email change request.
+ * Validates new email, updates database, logs activity.
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_email'])) {
     $new_email = trim($_POST['email']);
     if (empty($new_email)) {
@@ -47,7 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_email'])) {
     }
 }
 
-// Handle password change
+/**
+ * Handle password change request.
+ * Validates current password, enforces strong password policy, updates database, logs activity.
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     $current_password = $_POST['current_password'];
     $new_password = $_POST['new_password'];
@@ -85,39 +117,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     <title>My Profile - Grey Lock</title>
     <link rel="stylesheet" type="text/css" href="assets/css/profile.css">
     <script src="assets/js/darkmode.js"></script>
-    <style>
-        .profile-action-btns {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .profile-action-btns button {
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: none;
-            background: #333;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .profile-action-btns button:hover {
-            background: #555;
-        }
-        .profile-form {
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="profile-container">
         <h2>My Profile</h2>
+        <!-- Display user info -->
         <p><strong>Username:</strong> <?= htmlspecialchars($user['username']) ?></p>
         <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
         <div class="profile-action-btns">
             <button type="button" onclick="showForm('email')">Change Email</button>
             <button type="button" onclick="showForm('password')">Change Password</button>
         </div>
+        <!-- Display success or error messages -->
         <?php if ($success): ?>
             <div class="success-message"><?= htmlspecialchars($success) ?></div>
         <?php elseif ($error): ?>
@@ -142,14 +154,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             <button type="submit" name="change_password">Change Password</button>
         </form>
     </div>
-    <footer>
-        &copy; 2025 Grey Lock
+   <!-- Footer -->
+    <footer class="footer">
+        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
+        <a href="about">About</a> &nbsp;|&nbsp;
+        <a href="contact">Contact</a>
     </footer>
     <script>
+        /**
+         * Show the requested form (email or password).
+         * @param {string} type - 'email' or 'password'
+         */
         function showForm(type) {
             document.getElementById('emailForm').style.display = (type === 'email') ? 'block' : 'none';
             document.getElementById('passwordForm').style.display = (type === 'password') ? 'block' : 'none';
         }
+        // If there was a POST error, show the relevant form again
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_email']) && $error): ?>
             showForm('email');
         <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password']) && $error): ?>
