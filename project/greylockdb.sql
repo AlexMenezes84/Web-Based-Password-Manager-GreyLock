@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2025 at 10:21 AM
+-- Generation Time: May 21, 2025 at 03:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,10 @@ CREATE TABLE `contact_messages` (
 --
 
 INSERT INTO `contact_messages` (`id`, `name`, `email`, `message`, `created_at`) VALUES
-(0, 'test', 'test@gmail.com', 'This is a test message!', '2025-05-17 17:42:59');
+(1, 'test', 'test@gmail.com', 'This is a test message!', '2025-05-17 17:42:59'),
+(2, 'Alex', 'test@test.com', 'This is a test message 2!', '2025-05-21 13:53:51'),
+(3, 'Alex', 'test@test.com', 'This is a test message 2!', '2025-05-21 13:53:56'),
+(4, 'test 2', 'test2@test.com', 'test message', '2025-05-21 13:54:12');
 
 -- --------------------------------------------------------
 
@@ -112,7 +115,33 @@ INSERT INTO `login_logs` (`id`, `username`, `status`, `ip_address`, `created_at`
 (48, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:41', NULL),
 (49, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:44', NULL),
 (50, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-20 08:50:47', NULL),
-(51, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-20 08:50:50', NULL);
+(51, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-20 08:50:50', NULL),
+(52, 'b', 'SUCCESS', '::1', '2025-05-21 10:18:54', NULL),
+(53, 'admin', 'SUCCESS', '::1', '2025-05-21 10:21:27', NULL),
+(54, 'b', 'INVALID_CREDENTIALS', '::1', '2025-05-21 13:59:36', NULL),
+(55, 'b', 'INVALID_CREDENTIALS', '::1', '2025-05-21 13:59:40', NULL),
+(56, 'b', 'INVALID_CREDENTIALS', '::1', '2025-05-21 13:59:42', NULL),
+(57, 'b', 'INVALID_CREDENTIALS', '::1', '2025-05-21 13:59:45', NULL),
+(58, 'b', 'INVALID_CREDENTIALS', '::1', '2025-05-21 13:59:47', NULL),
+(59, 'b', 'HONEYPOT_TRIGGERED', '::1', '2025-05-21 13:59:50', NULL),
+(60, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-21 14:00:06', NULL),
+(61, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-21 14:00:09', NULL),
+(62, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-21 14:00:11', NULL),
+(63, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-21 14:00:13', NULL),
+(64, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-21 14:00:15', NULL),
+(65, 'a', 'HONEYPOT_TRIGGERED', '::1', '2025-05-21 14:00:17', NULL),
+(66, 'a', 'SUCCESS', '::1', '2025-05-21 14:00:36', NULL),
+(67, 'a', 'SUCCESS', '::1', '2025-05-21 14:00:47', NULL),
+(68, 'a', 'SUCCESS', '::1', '2025-05-21 14:00:54', NULL),
+(69, 'a', 'SUCCESS', '::1', '2025-05-21 14:01:03', NULL),
+(70, 'b', 'SUCCESS', '::1', '2025-05-21 14:01:38', NULL),
+(71, 'a', 'SUCCESS', '::1', '2025-05-21 14:05:22', NULL),
+(72, 'a', 'SUCCESS', '::1', '2025-05-21 14:09:39', NULL),
+(73, 'a', 'SUCCESS', '::1', '2025-05-21 14:25:59', NULL),
+(74, 'a', 'INVALID_CREDENTIALS', '::1', '2025-05-21 14:44:17', NULL),
+(75, 'a', 'SUCCESS', '::1', '2025-05-21 14:44:21', NULL),
+(76, 'b', 'SUCCESS', '::1', '2025-05-21 14:44:27', NULL),
+(77, 'admin', 'SUCCESS', '::1', '2025-05-21 14:45:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -136,8 +165,10 @@ CREATE TABLE `passwords` (
 --
 
 INSERT INTO `passwords` (`id`, `user_id`, `service_name`, `website_link`, `service_username`, `encrypted_password`, `created_at`, `updated_at`) VALUES
-(0, 1, 'DMU', 'www.dmu.ac.uk', 'p12345', 'O6r5TTioE8X3xrlwDO/ifDo6UXVCRnMvZ3hjNUVuaExhQkZuclVwQT09', '2025-05-17 17:50:09', '2025-05-17 17:50:09'),
-(3, 1, 'test1', 'http://test1.com', 'test', '/bZr33TKEMiBvJWFq85G+VBrUUp1SE5OVE9YMUxYTDMzY3Q3MFE9PQ==', '2025-05-05 22:36:52', '2025-05-17 16:13:11');
+(1, 1, 'DMU1', 'dmu.ac.uk', 'p123451', 'qjW+Os8/psL28Iyw6hbqomhRZnJCdEw1UVNuMW8wQWE1SjVxQnc9PQ==', '2025-05-17 17:50:09', '2025-05-21 13:26:30'),
+(3, 1, 'test1', 'http://test1.com', 'test', '/bZr33TKEMiBvJWFq85G+VBrUUp1SE5OVE9YMUxYTDMzY3Q3MFE9PQ==', '2025-05-05 22:36:52', '2025-05-17 16:13:11'),
+(4, 1, 'dmu email', 'my.dmu.ac.uk', 'P123451', 'NrVJBW6GcOZdgdDc9IcaxTo6WVc3QVJyZVBtQ1hpa1RDakpLc1NXQT09', '2025-05-21 13:43:24', '2025-05-21 13:43:24'),
+(5, 2, 'test', 'test.com', 'test1', 'vpTQbUgNMxNfprkfyoaohTo6Nk1SN2MwV2FKVXpwZVExS3NENDdFZz09', '2025-05-21 13:44:47', '2025-05-21 13:44:47');
 
 -- --------------------------------------------------------
 
@@ -159,7 +190,17 @@ CREATE TABLE `password_resets` (
 
 INSERT INTO `password_resets` (`id`, `email`, `token`, `expires_at`, `expires`) VALUES
 (1, 'a@a.com', 'b09a190f76e7b3308b7c26a686428c758f3c3da87292d2d07db6816d668f9cfa', '0000-00-00 00:00:00', 1746482969),
-(0, 'alexmenezes141184@gmail.com', 'b1aca2bdc84c6d947f575a4247defde18f36cf69ecdbfbc0d8837c17a8524126', '0000-00-00 00:00:00', 1747731815);
+(0, 'alexmenezes141184@gmail.com', 'b1aca2bdc84c6d947f575a4247defde18f36cf69ecdbfbc0d8837c17a8524126', '0000-00-00 00:00:00', 1747731815),
+(0, 'alexmenezes141184@gmail.com', 'b334469641acd5225743b3667a83f498e3df104bc6a9fe7da24db365638304d9', '0000-00-00 00:00:00', 1747832706),
+(0, 'alexmenezes141184@gmail.com', 'c144071a7df5fdda1a947e2dbad7cff464c2b0f6d8af9471c350ef9e6185fedb', '0000-00-00 00:00:00', 1747832713),
+(0, 'alexmenezes141184@gmail.com', 'fc70223a82643101f207e9021f5d7d0fb9c92817555a469d9af887f885fda18c', '0000-00-00 00:00:00', 1747832853),
+(0, 'alexmenezes141184@gmail.com', '647687406ef9d6c81b6b6fae04a25f3dceeab521e2f48878480a25e6b8d00f86', '0000-00-00 00:00:00', 1747832867),
+(0, 'alexmenezes141184@gmail.com', '5ee7cdcbccff6d81ba6b3636d9231c5f4e45c96b5e8fed7d18c1becc7e3668f0', '0000-00-00 00:00:00', 1747832888),
+(0, 'alexmenezes141184@gmail.com', 'e35a669c9fe191e43afbe9e02b0282b003c1d139074cafb09bd0b3953da74af2', '0000-00-00 00:00:00', 1747832961),
+(0, 'alexmenezes141184@gmail.com', '25a36509dcd25eea16bdd8dbfe0d838ff2bc51e90b00df363c5b28354a4511c8', '0000-00-00 00:00:00', 1747833217),
+(0, 'alexmenezes141184@gmail.com', 'dffcb2fe043c4da33429ba6ee4aa441bab3f1ce4ce9912ee3cbbf2728163dfd6', '0000-00-00 00:00:00', 1747833434),
+(0, 'alexmenezes141184@gmail.com', 'd9c57f791208f181459b781819d0b257d5492a07d226773d99bd2d153cc01f87', '0000-00-00 00:00:00', 1747833853),
+(0, 'alexmenezes141184@gmail.com', '369d03a09f48fba0f2f7583351ab709b9f8460485bf366b823050351123e8b46', '0000-00-00 00:00:00', 1747834157);
 
 -- --------------------------------------------------------
 
@@ -245,10 +286,22 @@ ALTER TABLE `user_activity_logs`
 --
 
 --
+-- AUTO_INCREMENT for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+
+--
+-- AUTO_INCREMENT for table `passwords`
+--
+ALTER TABLE `passwords`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user_activity_logs`
