@@ -86,6 +86,14 @@ require '../includes/header.php';
       </tbody>
     </table>
   </main>
-  <footer>&copy; 2025 Grey Lock</footer>
+   <!-- 
+        Footer: 
+        - Copyright and navigation links.
+    -->
+    <footer class="footer">
+        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
+        <a href="about">About</a> &nbsp;|&nbsp;
+        <a href="contact">Contact</a>
+    </footer>
 </body>
 </html>

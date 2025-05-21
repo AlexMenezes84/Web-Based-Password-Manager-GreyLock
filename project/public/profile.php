@@ -177,8 +177,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             <button type="submit" name="change_password">Change Password</button>
         </form>
     </div>
-    <footer>
-        &copy; 2025 Grey Lock
+    <!-- 
+        Footer: 
+        - Copyright and navigation links.
+    -->
+    <footer class="footer">
+        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
+        <a href="about">About</a> &nbsp;|&nbsp;
+        <a href="contact">Contact</a>
     </footer>
     <script>
         /**
