@@ -17,7 +17,7 @@
  * - header.php: Page header and navigation.
  * - signup.inc.php: Handles form submission and user creation.
  * 
- * @author Alexandre De Menezes - P2724348 
+ * @author Alexandre De Menezes - P2724348
  * @version 1.0
  */
 
@@ -83,11 +83,8 @@ require '../includes/header.php'; // Include the site header
             <p>Already have an account? <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a></p>
         </form>
     </div>
-    <!-- Footer -->
-    <footer class="footer">
-        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
-        <a href="about">About</a> &nbsp;|&nbsp;
-        <a href="contact">Contact</a>
+    <footer>
+        &copy; 2025 Grey Lock
     </footer>
 </body>
 </html>

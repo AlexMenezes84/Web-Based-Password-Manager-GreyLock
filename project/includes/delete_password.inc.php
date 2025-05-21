@@ -25,9 +25,7 @@
  * @version 1.0
  */
 // Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require 'dbh.inc.php';

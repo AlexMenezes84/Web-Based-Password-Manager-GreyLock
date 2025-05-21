@@ -27,10 +27,7 @@
 
 require '../includes/config.php';
 require '../includes/dbh.inc.php';
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password_id = $_POST['password_id'];
     $service_name = $_POST['service_name'];
