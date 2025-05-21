@@ -83,8 +83,14 @@ require '../includes/header.php'; // Include the site header
             <p>Already have an account? <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a></p>
         </form>
     </div>
-    <footer>
-        &copy; 2025 Grey Lock
+    <!-- 
+        Footer: 
+        - Copyright and navigation links.
+    -->
+    <footer class="footer">
+        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
+        <a href="about">About</a> &nbsp;|&nbsp;
+        <a href="contact">Contact</a>
     </footer>
 </body>
 </html>

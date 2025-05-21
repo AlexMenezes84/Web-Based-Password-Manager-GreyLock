@@ -93,11 +93,6 @@
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/">Go Home</a>
         <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a>
     </div>
-     <!-- Footer -->
-    <footer class="footer">
-        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
-        <a href="about">About</a> &nbsp;|&nbsp;
-        <a href="contact">Contact</a>
-    </footer>
+   
 </body>
 </html>

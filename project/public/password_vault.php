@@ -199,8 +199,14 @@ $passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </main>
-    <footer>
-        &copy; 2025 Grey Lock
+    <!-- 
+        Footer: 
+        - Copyright and navigation links.
+    -->
+    <footer class="footer">
+        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
+        <a href="about">About</a> &nbsp;|&nbsp;
+        <a href="contact">Contact</a>
     </footer>
 </body>
 </html>
