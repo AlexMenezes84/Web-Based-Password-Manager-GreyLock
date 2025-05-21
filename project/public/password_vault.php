@@ -1,169 +1,93 @@
 <?php
-require '../includes/header.php';
-require '../includes/config.php';
-require '../includes/decrypt_password.php';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-// If honeypot session is active, redirect to honeypot vault
-if (!empty($_SESSION['honeypot_vault'])) {
-    header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/vault");
-    exit();
-}
+/**
+ * signup.php
+ * 
+ * User registration page for Grey Lock Password Manager.
+ * 
+ * Features:
+ * - Presents a registration form for new users.
+ * - Displays error messages for invalid input or duplicate accounts.
+ * - Retains entered username and email on error for user convenience.
+ * 
+ * Security:
+ * - Requires strong password (enforced in backend).
+ * - Sanitizes user input for display.
+ * 
+ * Dependencies:
+ * - header.php: Page header and navigation.
+ * - signup.inc.php: Handles form submission and user creation.
+ * 
+ * @author Alexandre De Menezes - P2724348
+ * @version 1.0
+ */
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-// Include database connection
-require '../includes/dbh.inc.php';
-
-// Fetch the user's saved passwords
-$stmt = $pdo->prepare("SELECT id, service_name, service_username, encrypted_password, website_link FROM passwords WHERE user_id = :user_id");
-$stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-$stmt->execute();
-$passwords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+require '../includes/header.php'; // Include the site header
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Password Vault - Grey Lock</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/vault.css">
-    <script src="assets/js/vault.js" defer></script>
+    <title>Sign Up - Grey Lock</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/signup.css">
+    <script src="assets/js/signup.js" defer></script> 
     <script src="assets/js/darkmode.js"></script>
 </head>
 <body>
-    <main>
-        <div class="vault-container">
-            <h2>Your Password Vault</h2>
-            <!-- Add New Button -->
-            <button id="addNewButton">Add New</button>
+    <div class="signup-container">
+        <h2>Create an Account</h2>
 
-            <!-- Generate Password Button -->
-            <button id="generatePasswordButton">Generate Password</button>
+        <?php
+        // Retrieve error code from query parameters, if any
+        $error = isset($_GET['error']) ? $_GET['error'] : '';
 
-            <!-- Password List -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>Service Name</th>
-                        <th>Website Link</th>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (count($passwords) > 0): ?>
-                        <?php foreach ($passwords as $password): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($password['service_name']) ?></td>
-                                <td><a href="<?= htmlspecialchars($password['website_link']) ?>" target="_blank"><?= htmlspecialchars($password['website_link']) ?></a></td>
-                                <td><?= htmlspecialchars($password['service_username']) ?></td>
-                                <td>
-                                    <input type="password" value="<?= htmlspecialchars(decrypt_password($password['encrypted_password'])) ?>" readonly>
-                                    <button onclick="togglePassword(this)">Show</button>
-                                </td>
-                                <td>
-                                    <button onclick='openModifyModal(<?= json_encode([
-                                        "id" => $password["id"],
-                                        "service_name" => $password["service_name"],
-                                        "website_link" => $password["website_link"],
-                                        "service_username" => $password["service_username"],
-                                        "password" => decrypt_password($password["encrypted_password"])
-                                    ]) ?>)'>Modify</button>
-                                    <form action="../includes/delete_password.inc.php" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
-                                        <input type="hidden" name="password_id" value="<?= $password['id'] ?>">
-                                        <button type="submit" class="deleteButton">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="5">No passwords saved yet.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+        // Retain previously entered username and email on error
+        $old_username = isset($_GET['username']) ? htmlspecialchars($_GET['username'], ENT_QUOTES, 'UTF-8') : '';
+        $old_email = isset($_GET['email']) ? htmlspecialchars($_GET['email'], ENT_QUOTES, 'UTF-8') : '';
+        ?>
 
-            <!-- Modal Overlay -->
-            <div id="modalOverlay"></div>
+        <!-- Registration Form -->
+        <form action="../includes/signup.inc.php" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="<?php echo $old_username; ?>" required>
+            <!-- Display error if username already exists -->
+            <?php if ($error === 'usernameexists'): ?>
+                <p id="username-error" style="color: red;">Username already exists.</p>
+            <?php endif; ?>
+            <br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="<?php echo $old_email; ?>" required>
+            <!-- Display error for invalid or duplicate email -->
+            <?php if ($error === 'invalidemail'): ?>
+                <p id="email-error" style="color: red;">Invalid email format.</p>
+            <?php elseif ($error === 'emailexists'): ?>
+                <p id="email-error" style="color: red;">Email already exists.</p>
+            <?php endif; ?>
+            <br>
 
-            <!-- Add Password Modal -->
-            <div id="addPasswordModal" style="display: none;">
-                <h3>Add New Password</h3>
-                <form action="../includes/add_password.inc.php" method="POST">
-                    <label for="service_name">Service Name:</label>
-                    <input type="text" id="service_name" name="service_name" required>
-                    <br>
-                    <label for="website_link">Website Link:</label>
-                    <input type="text" id="website_link" name="website_link" required>
-                    <br>
-                    <label for="service_username">Username:</label>
-                    <input type="text" id="service_username" name="service_username" required>
-                    <br>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    <button type="button" onclick="toggleAddPasswordVisibility()">Show</button>
-                    <br>
-                    <button type="submit">Save</button>
-                    <button type="button" onclick="closeModal()">Cancel</button>
-                </form>
-            </div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br><br>
 
-            <!-- Generate Password Modal -->
-            <div id="generatePasswordModal" style="display: none;">
-                <h3>Generate Password</h3>
-                <label for="password_length">Length:</label>
-                <input type="number" id="password_length" name="password_length" value="16" min="8" max="64">
-                <br>
-                <label><input type="checkbox" id="use_uppercase" checked> A-Z</label>
-                <label><input type="checkbox" id="use_lowercase" checked> a-z</label>
-                <label><input type="checkbox" id="use_numbers" checked> 0-9</label>
-                <label><input type="checkbox" id="use_symbols" checked> !@#$%</label>
-                <br>
-                <button type="button" onclick="generatePassword()">Generate</button>
-                <br>
-                <label for="generated_password">Generated Password:</label>
-                <input type="text" id="generated_password" readonly>
-                <br>
-                <button type="button" onclick="showGeneratedPasswords()">Show All Generated Passwords</button>
-                <br>
-                <div id="generatedPasswordsList" style="display: none; margin-top: 10px;">
-                    <h4>Generated Passwords:</h4>
-                    <ul id="generatedPasswords"></ul>
-                </div>
-                <button type="button" onclick="closeModal()">Close</button>
-            </div>
-           <!-- Modify Password Modal -->
-            <div id="modifyPasswordModal" style="display: none;">
-                <h3>Modify Password Details</h3>
-                <form id="modifyPasswordForm" action="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/modify_password" method="POST">
-                    <input type="hidden" id="modify_password_id" name="password_id">
-                    <label for="modify_service_name">Service Name:</label>
-                    <input type="text" id="modify_service_name" name="service_name" required>
-                    <br>
-                    <label for="modify_website_link">Website Link:</label>
-                    <input type="text" id="modify_website_link" name="website_link" required>
-                    <br>
-                    <label for="modify_service_username">Username:</label>
-                    <input type="text" id="modify_service_username" name="service_username" required>
-                    <br>
-                    <label for="modify_password">Password:</label>
-                    <input type="text" id="modify_password" name="password" required>
-                    <br>
-                    <button type="submit">Save Changes</button>
-                    <button type="button" onclick="closeModal()">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </main>
-     <footer>
-        &copy; 2025 Grey Lock
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+            <br><br>
+
+            <!-- Display password-related errors -->
+            <?php if ($error === 'passwordmismatch'): ?>
+                <p id="error-message" style="color: red;">Passwords do not match.</p>
+            <?php elseif ($error === 'weakpassword'): ?>
+                <p id="error-message" style="color: red;">Password must be at least 12 characters long, include uppercase, lowercase, a number, and a special character.</p>
+            <?php endif; ?>
+
+            <button type="submit">Sign Up</button>
+            <p>Already have an account? <a href="/websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login">Login</a></p>
+        </form>
+    </div>
+     <!-- Footer -->
+    <footer class="footer">
+        &copy; 2025 Grey Lock &mdash; Secure your digital life.<br>
+        <a href="about">About</a> &nbsp;|&nbsp;
+        <a href="contact">Contact</a>
     </footer>
 </body>
 </html>

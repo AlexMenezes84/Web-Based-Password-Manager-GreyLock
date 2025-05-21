@@ -1,7 +1,38 @@
 <?php
+/**
+ * decrypt_password.php
+ * 
+ * Utility script to decrypt an encrypted password for Grey Lock Password Manager.
+ * 
+ * Features:
+ * - Receives an encrypted password (base64-encoded) via GET parameter.
+ * - Decrypts the password using AES-256-CBC and a secure key/IV.
+ * - Outputs the decrypted password, sanitized for safe display.
+ * 
+ * Security:
+ * - Uses prepared key from config.php (ENCRYPTION_KEY).
+ * - Sanitizes output to prevent XSS.
+ * 
+ * Dependencies:
+ * - config.php: Contains ENCRYPTION_KEY constant.
+ * - PHP OpenSSL extension.
+ * 
+ * Usage:
+ * - Called via GET with ?encrypted_password=... (base64-encoded string).
+ *   Example: decrypt_password.php?encrypted_password=...
+ * 
+ * @author Alexandre De Menezes - P2724348
+ * @version 1.0
+ */
+
 require_once 'config.php';
 
-// Function to decrypt the password
+/**
+ * Decrypts an encrypted password using AES-256-CBC.
+ *
+ * @param string $encrypted_password The base64-encoded encrypted password.
+ * @return string|false The decrypted password, or false on failure.
+ */
 function decrypt_password($encrypted_password) {
     $encryption_key = ENCRYPTION_KEY;
 
@@ -16,7 +47,7 @@ function decrypt_password($encrypted_password) {
     // Decrypt the password
     return openssl_decrypt($encrypted_text, 'AES-256-CBC', $encryption_key, 0, $iv);
 }
-
+// Check if the encrypted password is provided via GET
 if (isset($_GET['encrypted_password'])) {
     $encrypted_password = $_GET['encrypted_password'];
     $decrypted_password = decrypt_password($encrypted_password);

@@ -1,5 +1,34 @@
 <?php
-session_start();
+/**
+ * delete_password.inc.php
+ * 
+ * Handles deletion of a password entry from the user's vault in Grey Lock Password Manager.
+ * 
+ * Features:
+ * - Receives POST data with the password entry ID to delete.
+ * - Deletes the specified password entry for the logged-in user.
+ * - Redirects with success or error messages based on the outcome.
+ * 
+ * Security:
+ * - Uses prepared statements to prevent SQL injection.
+ * - Ensures only the owner (logged-in user) can delete their own password entries.
+ * 
+ * Dependencies:
+ * - dbh.inc.php: Database connection (PDO).
+ * - Session variable: user_id (must be set for authentication).
+ * 
+ * Usage:
+ * - Called via POST from the password vault interface.
+ *   Example: password_vault.php (form) -> delete_password.inc.php (handler)
+ * 
+ * @author Alexandre De Menezes - P2724348
+ * @version 1.0
+ */
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require 'dbh.inc.php';
 

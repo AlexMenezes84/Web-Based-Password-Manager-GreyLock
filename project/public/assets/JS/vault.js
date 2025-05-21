@@ -1,3 +1,28 @@
+/**
+ * vault.js
+ * 
+ * Handles all client-side interactivity for the password vault in Grey Lock Password Manager.
+ * 
+ * Features:
+ * - Opens and closes modals for adding, generating, and modifying passwords.
+ * - Handles password generation via AJAX and displays generated passwords.
+ * - Allows users to modify generated passwords before saving.
+ * - Confirms deletion of passwords.
+ * - Toggles password visibility in forms and lists.
+ * - Maintains a list of all generated passwords in the session.
+ * 
+ * Usage:
+ * - Include this script on the password vault page.
+ * - Requires specific element IDs for modals, buttons, and input fields.
+ * 
+ * Security:
+ * - Only handles UI logic; all sensitive operations (add, delete, modify) must be validated server-side.
+ * - No sensitive data is stored in localStorage or cookies.
+ * 
+ * Author: Alexandre De Menezes - P2724348
+ * Version: 1.0
+ */
+
 // Open the "Add New Password" modal
 document.getElementById('addNewButton').addEventListener('click', function () {
     document.getElementById('addPasswordModal').style.display = 'block';
@@ -9,6 +34,7 @@ document.getElementById('generatePasswordButton').addEventListener('click', func
     document.getElementById('generatePasswordModal').style.display = 'block';
     document.getElementById('modalOverlay').style.display = 'block';
 });
+
 // Confirm before deleting a password
 function confirmDelete() {
     return confirm('Are you sure you want to delete this password? This action cannot be undone.');
@@ -35,10 +61,14 @@ function togglePassword(button) {
         button.textContent = 'Show'; // Change button text to "Show"
     }
 }
+
 // Array to store generated passwords
 let generatedPasswords = [];
 
-// Generate a password
+/**
+ * Generates a password using user-selected options and updates the UI.
+ * Makes an AJAX request to the PHP endpoint for password generation.
+ */
 function generatePassword() {
     const length = document.getElementById('password_length').value;
     const useUppercase = document.getElementById('use_uppercase').checked;
@@ -56,7 +86,10 @@ function generatePassword() {
         .catch(error => console.error('Error generating password:', error));
 }
 
-// Modify the currently generated password
+/**
+ * Allows the user to modify the currently generated password.
+ * Makes the input editable and saves the change on Enter.
+ */
 function modifyPassword() {
     const generatedPasswordInput = document.getElementById('generated_password');
     generatedPasswordInput.removeAttribute('readonly'); // Allow editing
@@ -72,7 +105,9 @@ function modifyPassword() {
     });
 }
 
-// Show all generated passwords
+/**
+ * Displays all generated passwords in a list.
+ */
 function showGeneratedPasswords() {
     const listContainer = document.getElementById('generatedPasswordsList');
     const list = document.getElementById('generatedPasswords');
@@ -90,7 +125,11 @@ function showGeneratedPasswords() {
 
     listContainer.style.display = 'block'; // Show the list
 }
-// Open the "Modify Password" modal
+
+/**
+ * Opens the "Modify Password" modal and populates it with the selected password's data.
+ * @param {Object} password - The password object containing id, service_name, website_link, service_username, and password.
+ */
 function openModifyModal(password) {
     document.getElementById('modify_password_id').value = password.id;
     document.getElementById('modify_service_name').value = password.service_name;
@@ -101,6 +140,9 @@ function openModifyModal(password) {
     document.getElementById('modalOverlay').style.display = 'block';
 }
 
+/**
+ * Closes all open modals and the overlay.
+ */
 function closeModal() {
     document.getElementById('addPasswordModal').style.display = 'none';
     document.getElementById('generatePasswordModal').style.display = 'none';

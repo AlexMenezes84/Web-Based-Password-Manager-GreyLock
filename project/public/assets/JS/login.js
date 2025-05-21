@@ -1,3 +1,26 @@
+/**
+ * login.js
+ * 
+ * Handles client-side login form validation for Grey Lock Password Manager.
+ * 
+ * Features:
+ * - Listens for login form submission.
+ * - Retrieves and validates username and password input fields.
+ * - Provides basic client-side validation and feedback.
+ * 
+ * Usage:
+ * - Include this script on the login page.
+ * - The login form should have the id 'loginForm'.
+ * - Username and password input fields should have ids 'username' and 'password'.
+ * 
+ * Security:
+ * - Only for demonstration; real authentication must be performed server-side.
+ * - Do not use client-side validation alone for production authentication.
+ * 
+ * Author: Alexandre De Menezes - P2724348
+ * Version: 1.0
+ */
+
 // Get the login form element.
 const loginForm = document.getElementById('loginForm');
 
@@ -14,7 +37,6 @@ loginForm.addEventListener('submit', function(event) {
   if (username === "user" && password === "pass") {
     alert('Login successful!');
     // Redirect or perform further actions on successful login.
-    // Example: window.location.href = "dashboard.html";
   } else {
     alert('Invalid username or password.');
   }

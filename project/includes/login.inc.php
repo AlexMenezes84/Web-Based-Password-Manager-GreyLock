@@ -1,4 +1,36 @@
 <?php
+/**
+ * login.inc.php
+ * 
+ * Handles user authentication for Grey Lock Password Manager.
+ * 
+ * Features:
+ * - Validates and sanitizes user input (username, password).
+ * - Implements brute force protection with login attempt tracking.
+ * - Logs all login attempts with IP and forwarded IPs.
+ * - Supports "remember me" functionality via cookies.
+ * - Triggers honeypot mode after repeated failed logins for non-admins.
+ * - Redirects with error messages for invalid credentials, blocked users, or database errors.
+ * 
+ * Security:
+ * - Uses prepared statements to prevent SQL injection.
+ * - Sanitizes all user input to prevent XSS.
+ * - Tracks login attempts to mitigate brute force attacks.
+ * - Honeypot mode provides fake vault data after too many failed attempts.
+ * 
+ * Dependencies:
+ * - dbh.inc.php: Database connection (PDO).
+ * - login_logs table: For logging login attempts.
+ * - passwords table: For fetching user vault data (honeypot).
+ * 
+ * Usage:
+ * - Called via POST from the login form.
+ * 
+ * @author Alexandre De Menezes - P2724348
+ * @version 1.0
+ */
+
+// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -6,12 +38,12 @@ if (session_status() === PHP_SESSION_NONE) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require 'dbh.inc.php';
 
-    // Brute force protection
+    // Brute force protection: track attempts and reset after 15 minutes
     if (!isset($_SESSION['login_attempts'])) $_SESSION['login_attempts'] = 0;
     if (!isset($_SESSION['last_attempt_time'])) $_SESSION['last_attempt_time'] = time();
     if (time() - $_SESSION['last_attempt_time'] > 900) $_SESSION['login_attempts'] = 0;
 
-    // IP helpers
+    // Helper: Get client IP address
     function get_client_ip() {
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
@@ -29,9 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         return 'unknown';
     }
+
+    // Helper: Get all forwarded IPs
     function get_forwarded_ips() {
         return !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;
     }
+
+    // Helper: Log login attempt to database
     function log_login_attempt($pdo, $username, $status) {
         $ip = get_client_ip();
         $forwarded_ips = get_forwarded_ips();
@@ -56,20 +92,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Honeypot threshold
+    // Honeypot threshold for failed attempts
     $honeypot_threshold = 5;
 
-    // Only trigger honeypot if user exists, is not admin, and too many failed attempts
+    // Trigger honeypot for non-admins after too many failed attempts
     if ($user && !$user['is_admin'] && $_SESSION['login_attempts'] >= $honeypot_threshold) {
         // Clear all session data
         session_unset();
 
-        // Fetch only this user's data for the fake vault
+        // Fetch user's real vault and generate fake entries
         $vault = [];
         $pstmt = $pdo->prepare("SELECT service_name, website_link, service_username FROM passwords WHERE user_id = ?");
         $pstmt->execute([$user['id']]);
         $realVault = $pstmt->fetchAll(PDO::FETCH_ASSOC);
-
+        // Generate fake entries
         foreach ($realVault as $entry) {
             $fakeUser = $entry['service_username'] . rand(100,999);
             $fakePass = bin2hex(random_bytes(6));
@@ -81,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
         }
 
-        // Set ONLY honeypot-specific session variables
+        // Set honeypot session variables
         $_SESSION['honeypot_vault'] = $vault;
         $_SESSION['honeypot_user'] = $username;
         $_SESSION['honeypot_mode'] = true;
@@ -92,18 +128,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // Query to fetch user by username (again for fresh $user)
+        // Fetch user again for fresh data
         $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
+            // Check if user is blocked
             if (!empty($user['blocked']) && $user['blocked']) {
                 log_login_attempt($pdo, $username, 'BLOCKED_USER');
                 header("Location: ../public/login.php?error=blocked");
                 exit();
             }
+            // Verify password
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
@@ -118,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/password_vault.php?login=success");
                 exit();
             } else {
-                // Password is incorrect, username exists: show error
+                // Password incorrect
                 $_SESSION['login_attempts']++;
                 $_SESSION['last_attempt_time'] = time();
                 log_login_attempt($pdo, $username, 'INVALID_CREDENTIALS');
@@ -126,13 +164,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             }
         } else {
-            // Username does not exist: show error
+            // Username does not exist
             $_SESSION['login_attempts']++;
             $_SESSION['last_attempt_time'] = time();
             log_login_attempt($pdo, $username, 'INVALID_CREDENTIALS');
             header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login.php?error=invalidcredentials");
             exit();
         }
+        // Close the database connection
     } catch (PDOException $e) {
         log_login_attempt($pdo, $username, 'DB_ERROR');
         header("Location: /websites/GreyLock/Web-Based-Password-Manager-GreyLock/project/public/login.php?error=databaseerror");
